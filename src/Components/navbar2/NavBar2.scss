@@ -1,0 +1,33 @@
+.navbar2{
+    height: 40px;
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 10px;
+
+    ul{
+        display: flex;
+        list-style: none;
+        gap: 20px;
+        height: 30px;
+
+        li{
+            color: gray;
+            cursor: pointer;
+            
+            &:hover{
+                border-bottom: 1px solid rgb(94, 93, 93);
+            }
+            
+        }
+        
+    }
+    a:-webkit-any-Link{
+        color: black;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .activeNav{
+        border-bottom: 1px solid rgb(94, 93, 93);
+        color: black;
+    }
+}

@@ -1,0 +1,59 @@
+$color_1: #c0c0c0;
+$background-color_1: #323639;
+
+.navbar {
+	height: 80px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: $background-color_1;
+}
+.wrapper {
+
+	width: 190px;
+	&:nth-child(2) {
+		color: $color_1;
+		background: linear-gradient( to right, #ff512f, #f09819);
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		margin-top: 30px;
+		span {
+			font-weight: bold;
+			font-size: 30px;
+			margin-left: 10px;
+		}
+        
+        
+	}
+	&:last-child {
+		display: flex;
+		align-items: center;
+		margin-right: 20px;
+		border: 0.5px solid #c0c0c0;
+		color: $color_1;
+		border-radius: 10px;
+
+        .nameContainer {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+			cursor: pointer;
+        }
+        .profileContainer {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            padding-right: 0px;
+
+            .profilePic {
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+				object-fit: cover;
+				border: 1px solid white;
+            }
+        }
+        
+	}
+}
+

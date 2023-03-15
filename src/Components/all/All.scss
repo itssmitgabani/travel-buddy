@@ -1,0 +1,74 @@
+.all{
+    margin: 25px 20px;
+    padding: 10px;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+
+    .cellWithImg{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .cellImg{
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+
+    .cellWithStatus{
+        padding: 5px;
+        border-radius: 5px;
+
+        &.activated{
+            color: green;
+            background-color: rgba(0,128,0,0.05);
+        }
+
+        &.deactivated{
+            color: crimson;
+            background-color: rgba(255, 0, 0, 0.05);
+        }
+    }
+
+    .viewButton{
+        padding: 2px 5px;
+        border: 1px solid gray;
+        color: darkblue;
+        border-radius: 5px ;
+        cursor: pointer;
+    }
+    .aButton{
+        padding: 2px 5px;
+        border: 1px solid gray;
+        color: green;
+        border-radius: 5px ;
+        cursor: pointer;
+    }
+    .dButton{
+        padding: 2px 5px;
+        border: 1px solid gray;
+        color: crimson;
+        border-radius: 5px ;
+        cursor: pointer;
+    }
+    .MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+        outline: none !important;
+    }
+    .MuiDataGrid-root 	.MuiDataGrid-columnHeader:focus-within {
+        outline: none !important;
+    }
+    .abc {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-y: scroll !important;
+        height: 80%;
+        width: 100%;
+      }
+      .link{
+        color: blue($color: #000000);
+        text-decoration: none;
+    }
+    
+}

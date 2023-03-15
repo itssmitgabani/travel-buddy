@@ -1,0 +1,121 @@
+.sidebar{
+    flex: 1;
+    min-height: 100vh;
+    background-color: #323639;
+
+    .top{
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .logo{
+            margin-top: 10px;
+            text-align: center;
+            width: 70%;
+            height: 100%;
+        }
+    }
+
+    .center{
+        padding-left: 10px;
+        color: #c0c0c0;
+        margin-top: 30px;
+
+        .list{
+            padding: 0;
+            margin: 0;
+            width: 80%;
+
+            li{
+                display: flex;
+                align-items: center;
+                padding: 5px;
+                cursor: pointer;
+                height: 45px;
+                margin-top: 2px;
+                transition: text-shadow .3s;
+
+                
+
+                .icon{
+                    margin-left: 2px;
+                    font-size: 20px;
+                    padding: 1px;
+                    width: 24px;
+                    height: 24px;
+                }
+                .expandIcon{
+                    margin-left: auto;
+                }
+                span{
+                    margin-left: 10px;
+                    font-size: 17px;
+                    font-weight: 400;
+                }
+
+                &:hover{
+                    background: linear-gradient(
+                        to right,
+                        #ff512f,
+                        #f09819
+                    );
+                    text-shadow: 0 0 .65px #333, 0 0 .65px #333;
+                    border-radius: 0px 20px 20px 0px;
+                    color: #333;
+                }
+                
+            }
+            .menu{
+                margin-left: 40px;
+                list-style: none;
+            }
+            
+        }
+    }
+    .bottom{
+        display: flex;
+        align-items: center;
+        margin: 10px;
+
+        .colorOption{
+            height: 30px;
+            width: 30px;
+            border-radius: 5px;
+            border: 2px solid #c0c0c0;
+            cursor: pointer;
+            margin: 10px;
+
+            &:nth-child(1){
+                background: linear-gradient(
+                    to right,
+                    #ff512f,
+                    #f09819
+                );
+            }
+            
+            &:nth-child(2){
+                background: linear-gradient(
+                    #1845ad,
+                    #23a2f6
+                );
+            }
+        }
+        
+    }
+    .Link{
+        text-decoration: none;
+        color: #c0c0c0;
+    }
+    .activeSide{
+        
+                    background: linear-gradient(
+                        to right,
+                        #ff522f84,
+                        #f0961975
+                    );
+                    text-shadow: 0 0 .65px #333, 0 0 .65px #333;
+                    border-radius: 0px 20px 20px 0px;
+                    color: #333;
+    }
+}

@@ -1,0 +1,23 @@
+.view{
+    height: 100%;
+    margin: 20px;
+    padding: 10px;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+
+    h1{
+        color: gray;
+    }
+    .container{
+        margin-top: 20px;
+        padding: 20px;
+
+        p{
+            display: inline;
+        }
+        .pad{
+            padding-left: 10px;
+        }
+    }
+
+}

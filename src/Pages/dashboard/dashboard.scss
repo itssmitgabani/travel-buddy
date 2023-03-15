@@ -1,0 +1,22 @@
+body{
+    background-color: #efeff0; 
+
+    
+    .widgets{
+        display: flex;
+        padding: 20px;
+        padding-bottom: 0px;
+        gap: 20px;
+    }
+    .blank{
+        flex: 1;
+    }
+    .blank1{
+        flex: 1.5;
+    }
+    .chartContainer{
+        display: flex;
+        gap: 20px;
+        margin: 20px 10px;
+    }
+}
