@@ -1,0 +1,34 @@
+.bookingsContainer{
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+
+    h1 {
+        color: gray;
+      }
+
+      .link{
+        color: darkblue;
+        text-decoration: none;
+    }
+    .viewButton{
+        padding: 2px 5px;
+        border: 1px solid gray;
+        color: darkblue;
+        border-radius: 5px ;
+        cursor: pointer;
+    }
+    .cellWithImg{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        .cellImg{
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+}

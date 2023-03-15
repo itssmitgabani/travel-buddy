@@ -1,0 +1,30 @@
+.roomContainer{
+    display: flex;
+    flex-wrap: wrap;
+
+    .addRoom{
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(
+            to left,
+            #ff512f,
+            #f09819
+        );
+        border-radius: 50%;
+        
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: white;
+        font-size: 24px;
+
+        .link{
+            color: white;
+            text-decoration: none;
+        }
+    }
+}
