@@ -1,0 +1,10 @@
+*{
+  margin: 0;
+}
+.dashboard{
+  display: flex;
+}
+.homeContainer{
+  flex: 6;
+  height: 100%;
+}

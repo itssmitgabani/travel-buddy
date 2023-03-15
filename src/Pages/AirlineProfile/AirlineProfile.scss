@@ -1,0 +1,167 @@
+
+
+$brown: #786450;
+.pContainer{
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+    .top{
+        h1{
+            color: gray;
+        }
+        .editable{
+            position: absolute;
+            top: 100px;
+            right: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            width: 50px;
+            border: 1px solid;
+            cursor: pointer;
+        }
+    }
+    .bottom{
+        display: flex;
+        
+        h3{
+            padding: 20px 30px;
+        }
+        .left{
+            flex: 2;
+
+            .image {
+                position: relative;
+                width: 170px;
+                height: 170px;
+                margin: 38px auto 38px auto;
+                
+                .circle-1 {
+                    position: absolute;
+                    box-sizing: border-box;
+                    width: 176px;
+                    height: 176px;
+                    top: -3px;
+                    left: -3px;
+                    border-width: 1px;
+                    border-style: solid;
+                    border-color: $brown $brown $brown transparent;
+                    border-radius: 50%;
+                    transition: all 1.5s ease-in-out;
+                }
+                
+                .circle-2 {
+                    @extend .circle-1;
+                    width: 182px;
+                    height: 182px;
+                    top: -6px;
+                    left: -6px;
+                    border-color: $brown transparent $brown $brown;
+                }
+                
+                img {
+                    display: block;
+                    border-radius: 50%;
+                    background: #F5E8DF;
+                    height: 170px;
+                    width: 170px;
+                    overflow: hidden;
+                    object-fit: cover;
+                }
+                
+                &:hover {
+                    
+                    .circle-1 {
+                        transform: rotate(360deg);
+                    }
+                    
+                    .circle-2 {
+                        transform: rotate(-360deg);
+                    }
+                    
+                }
+
+                .editable{
+                    position: absolute;
+                    border-radius: 50%;
+                    bottom: 10px;
+                    right: 0px;
+                    height: 40px;
+                    width: 40px;
+                    background-color: greenyellow;
+                    color: green;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                }
+                
+            }
+        }
+
+        .right{
+            flex: 3;
+            border-left: 1px solid lightgray;
+            display: flex;
+            flex-direction: column;
+            h3{
+                padding: 20px 30px;
+            }
+
+            .hotelDetailContainer{
+                width: 100%;
+                margin-left: 20px;
+                margin-right: 10px;
+                padding: 5px;
+                flex-wrap: wrap;
+                gap: 20px;
+                display: flex;
+                .item{
+                    width: 45%;
+                    display: flex;
+                    flex-direction: column;
+                    input,select{
+                        width: 90%;
+                        height: 25px;
+                        padding: 2px 2px;
+                        border: 1px solid;
+                        border-radius: 5px;
+                    }
+                    select{
+                        height: 30.6px;
+                    }
+                    .null{
+                        border:1px solid red;
+                    }
+                }
+                .saveButton {
+                    width: 35%;
+                    margin-top: 30px;
+                    align-self: center;
+                    height: 35px;
+                    border-radius: 5px;
+                    background: linear-gradient(to right, #1845ad, #23a2f6 );
+                    cursor: pointer;
+                    font-size: 1em;
+                    font-weight: bold;
+                    border: 1px solid;
+                    color: white;
+                    
+                    &:hover{
+                      background: linear-gradient(
+                        to left,
+                        #1845ad, #23a2f6 
+                      );
+                  }
+                }
+                
+            }
+
+        }
+    }
+
+    
+}
