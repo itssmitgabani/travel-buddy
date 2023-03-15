@@ -1,0 +1,102 @@
+.AboutUsContainer{
+    margin-top: 20px;
+    .heading{
+        font-weight: 300;
+        text-transform: uppercase;
+        font-size: 180%;
+        word-spacing: 2px;
+        text-align: center;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+    }
+    .heading::after{
+        display: block;
+        height: 2px;
+        background-color: #e67e22;
+        content: " ";
+        width: 100px;
+        margin: 0 auto;
+        margin-top: 15px;
+    }
+
+    .heading2{
+        font-weight: 300;
+        font-size: 100%;
+        word-spacing: 2px;
+        text-align: center;
+        margin-bottom: 30px;
+        letter-spacing: 1px;
+        width: 100%;
+        display: inline-block;
+    }
+
+    .mission{
+        margin-top: 20px;
+        margin-left: 80px;
+        margin-right: 80px;
+
+        .heading3{
+            font-size: 400%;
+            line-height: 100%;
+            font-weight: 600;
+        }
+
+        .content{
+            margin-top: 20px;
+        }
+    }
+    .story{
+        margin-top: 40px;
+        margin-left: 80px;
+        margin-right: 80px;
+
+        .heading3{
+            font-size: 400%;
+            line-height: 100%;
+            font-weight: 600;
+        }
+
+        .content{
+            margin-top: 20px;
+        }
+    }
+    .counterContainer{
+        margin-top: 40px;
+        background-color: #4a4a4a;
+        color: #f7f7f7;
+        padding: 20px;
+        .title2{
+
+        font-weight: 400;
+        font-size: 180%;
+        word-spacing: 2px;
+        text-align: center;
+        letter-spacing: 1px;
+
+        }
+
+        .counter{
+            margin-top: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+
+            .item{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 120px;
+            .count{
+                font-size: 170%;
+                font-weight: 500;
+            }
+            .title{
+                
+                font-size: 100%;
+                font-weight: 500;
+                text-align: center;
+            }
+        }
+    }
+    }
+}

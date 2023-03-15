@@ -1,0 +1,109 @@
+.NavBarContainer{
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+    
+    .left{
+
+        
+.logo{
+    height: 100px;
+    width: auto;
+    margin-top: 20px;
+    margin-left: 80px;
+    margin-bottom: 20px;
+}
+    }
+
+
+    .right{
+        display: flex;
+
+        .main-nav{
+            list-style: none;
+            margin-top: 55px;
+            margin-right: 40px;
+
+.pro{
+    border: 1px solid;
+    border-radius: 10px;
+}
+
+            .pro:hover{
+                cursor: pointer;
+                border: 1px solid !important;
+            }
+        }
+        .main-nav li{
+            display: inline-block;
+            margin-left: 40px;
+            color: #f4f4f4;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 130%;
+            border-bottom: 2px solid transparent;
+            padding: 8px ;
+            transition: border-bottom 0.2s;
+            cursor: pointer;
+            font-weight: 500    ;
+        }
+        .main-nav li:hover{
+            border-bottom: 2px solid #e67e22;
+        }
+        
+        
+        
+
+    }
+}
+
+.profileMenu{
+    position: absolute;
+    top: 130px;
+    right:90px;
+    background-color: white;
+    color: black;
+    width: 120px;
+    border-radius: 8px;
+    height: max-content;
+    border: 1px solid gray;
+    z-index: 2;
+
+    &::before{
+        content: '';
+        transform: rotate(45deg);
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: -10px;
+        right: 45px;
+        background-color: white;
+        border-top: 1px solid gray;
+        border-left: 1px solid gray;
+        z-index: -1;
+    }
+
+    ul{
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        height: 100%;
+        padding: 0;
+
+        .Link{
+            text-decoration: none;
+        }
+    }
+    li{
+        color: gray;
+        height: 30px;
+        padding-left: 10px;
+        padding-top:2px;
+        cursor: pointer;
+
+        &:hover{
+            text-decoration: underline;
+            font-weight: 500;
+        }
+    }}
