@@ -1,0 +1,50 @@
+.roomContainer{
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+
+
+    h1{
+        color: gray;
+    }
+    .addFlight{
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(
+            to left,
+            #1845ad, #23a2f6 
+        );
+        border-radius: 50%;
+        
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: white;
+        font-size: 24px;
+
+        
+        
+    }
+    .MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+        outline: none !important;
+    }
+    .MuiDataGrid-root 	.MuiDataGrid-columnHeader:focus-within {
+        outline: none !important;
+    }
+    .link{
+        color: blue;
+        text-decoration: none;
+    }
+    .viewButton{
+        padding: 2px 5px;
+        border: 1px solid gray;
+        color: darkblue;
+        border-radius: 5px ;
+        cursor: pointer;
+    }
+}
