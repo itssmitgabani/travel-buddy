@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import './WishlistItem.scss'
+import Skeleton from '@mui/material/Skeleton';
 
 const WishlistItem = ({item}) => {
     
-  const {data} = useFetch(`/room/wishlistRoom/${item}`)
+  const {data,loading} = useFetch(`/room/wishlistRoom/${item}`)
   const da = data;
   const navigate = useNavigate();
   const handleClick = () => {
@@ -16,13 +17,41 @@ const WishlistItem = ({item}) => {
   useEffect(() => { setDa(data)}, [data] )
   console.log(da1)
   return (
-    <div className="searchItem2">
+    <>{
+      loading ?
+      <div className="searchItem2">
+        <Skeleton variant="rectengular"width={200} height={200} />
+      <div className="siDesc" style={{width:"200px"}}>
+      <Skeleton variant='h1'/>
+      <Skeleton variant='text'/>
+      <Skeleton variant='text'/>
+      <Skeleton variant='text'/>
+      <Skeleton variant='text'/>
+      <Skeleton variant='text'/>
         
+        
+      </div>
+      <div className="siDetails">
+        <div className="siRating">
+        <Skeleton variant='text'/>
+        </div>
+        <div className="siDetailTexts">
+            <div>
+            <Skeleton variant='text'/>
+          </div>
+          <Skeleton variant='text'/>
+          
+        </div>
+      </div>
+    </div> 
+      :
+      <div className="searchItem2">
       <img src={da1._id  ? data.img[0] : ''} alt="" className="siImg" />
       <div className="siDesc">
         <h1 className="siTitle">{da && data.hotelname}</h1>
         <span className="siDistance">{da && data.address}</span>
         <span className="siTaxiOp">{da && data.category}</span>
+        
         
         <div style={{display:'flex'}}>
         {da1._id && data.amenities.map((item)=>(
@@ -52,6 +81,9 @@ const WishlistItem = ({item}) => {
         </div>
       </div>
     </div>
+    }
+    
+    </>
   )
 }
 

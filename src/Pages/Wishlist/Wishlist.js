@@ -11,7 +11,10 @@ const Wishlist = () => {
     <div>
       <h1 style={{color:'gray',padding:'20px',marginTop:'20px',textAlign:'center'}}>Wishlist </h1>
     <div className='wishlist'>
-      
+      {
+        user.wishlist.length === 0 && 
+        <div>Wishlist Empty!</div>
+      }
       {user.wishlist.map((item) => (
             <WishlistItem item={item} key={item} />
       ))}

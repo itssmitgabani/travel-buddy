@@ -4,6 +4,7 @@ import { Link, useNavigate} from 'react-router-dom';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios'
+import Loader from '../../Components/Loader/Loader'
 
 const Profile = () => {
   
@@ -11,6 +12,8 @@ const Profile = () => {
   
   const navigate = useNavigate();
   const [error,setError] = useState(null);
+  const [err,setErr] = useState(false);
+  const [loading,setLoading] = useState(false);
   const [name,setName] = useState(null);
   const [city,setCity] = useState(null);
   const [id,setId] = useState(null);
@@ -56,6 +59,7 @@ const Profile = () => {
 
   const handleUpdateNameAndImg = async e => {
     e.preventDefault()
+    setLoading(true)
     const data = new FormData()
     data.append("file",file)
     data.append("upload_preset","upload")
@@ -67,19 +71,24 @@ const Profile = () => {
         url = uploadRes.data
   
       }
-      
+      if(id && id.length != 12){
+        setLoading(false)
+        return setErr(true)
+      }
       const updatedData = {
         username:name? name: user.username,
         city:city? city: user.city,
         id:id? id: user.id,
-        img:file !== null ? url : user.img,
+        img:(file !== null ? url.url : user.img),
       }
 
       await axios.put(`/users/updateNameAndImg/${user._id}`,updatedData)
 
       const newData = await axios.get(`/users/find/${user._id}`)
       localStorage.setItem("user", JSON.stringify(newData.data.details));
+      setLoading(false)
     }catch(err){
+      setLoading(false)
       console.log(err)
     }
     handleCloseEditProfile()
@@ -89,6 +98,7 @@ const Profile = () => {
 
   const handleUpdatePassword = async e => {
     e.preventDefault()
+    setLoading(true)
     try{
 
       const passwords = {
@@ -100,11 +110,13 @@ const Profile = () => {
 
       await axios.put(`/users/updatePassword/${user._id}`,passwords)
       setError(null)
+      setLoading(false)
       alert("you need to re-login")
       
     dispatch({ type: "LOGOUT" });
     navigate("/login");
     }catch(err){
+      setLoading(false)
       setError(err.response.data.message)
     }
     handleCloseEditProfile()
@@ -113,6 +125,7 @@ const Profile = () => {
   return (
    
       <div className='profileContainer'>
+        {loading && <Loader/>}
       <div className="top">
             <h1>profile</h1>
         </div>
@@ -144,9 +157,9 @@ const Profile = () => {
         <h3>Edit Profile</h3>
         </div>
         </DialogContent>
-    <DialogContent dividers style={{'width':'30vw','height':'40vh'}}> 
+    <DialogContent dividers style={{'width':'30vw','height':'47vh'}}> 
     <div style={{'display':'flex','justifyContent':'center','flexDirection':'column','alignItems':'center'}}>
-          <div style={{'marginTop':'30px'}}>
+          <div style={{'marginTop':'20px'}}>
           <label htmlFor='file' style={{'cursor':'pointer'}}>
           <input type="file" name="file" id="file" accept="image/*"style={{'width':'200px','display':'none'}} onChange={handleChange}/>
           
@@ -183,6 +196,8 @@ const Profile = () => {
             onChange={handleSetId}
             placeholder='632496625927'
           />
+          
+          {err && <span style={{marginTop:'15px'}}> Invalid Id!</span>}
           </div>
       </DialogContent>
       <DialogActions style={{'display':'flex','justifyContent':'center','flexDirection':'column','alignItems':'center'}}>
@@ -224,8 +239,9 @@ const Profile = () => {
             variant="standard"
             type="password"
           />
+          
+          {error && <span style={{marginTop:'15px'}}>{error}</span>}
           </div>
-          {error && <span>{error}</span>}
       </DialogContent>
       <DialogActions style={{'display':'flex','justifyContent':'center','flexDirection':'column','alignItems':'center'}}>
           <Button onClick={handleUpdatePassword}>Save Changes</Button>

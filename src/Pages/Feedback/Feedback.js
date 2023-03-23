@@ -2,17 +2,20 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react'
 import './Feedback.scss'
 import {AuthContext} from '../../context/AuthContext.js'
+import Loader from '../../Components/Loader/Loader';
 
 const Feedback = () => {
   const {user} = useContext(AuthContext)
   const [info, setInfo] = useState({});
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
   const handleClick = async (e) => {
     e.preventDefault()
+    setLoading(true)
 try{
   const newData = {
     ...info,
@@ -20,15 +23,18 @@ try{
   }
   await axios.post('/feedback/create',newData)
   alert("thanks")
+  setLoading(false)
   window.location.reload()
 }
 catch(err){
+  setLoading(false)
   setError(true)
 }  
   }
 
   return (
     <div>
+      {loading && <Loader/>}
       <form className='form2'> 
       <h1 style={{color:'gray',padding:'20px',marginTop:'20px',textAlign:'center'}}>Feedback Form :</h1>     
       Feedback For :

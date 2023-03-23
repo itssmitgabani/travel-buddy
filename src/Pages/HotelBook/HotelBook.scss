@@ -87,7 +87,10 @@
     cursor: pointer;
   }
   
-  .hotelTitle {
+  .hotelTitle1 {
+    font-size: 26px;
+  }
+  .hotelTitle2 {
     font-size: 24px;
     margin-left: 50px;
   }
@@ -98,7 +101,10 @@
     align-items: center;
     gap: 10px;
   }
-  
+  .aLink:visited{
+    text-decoration: none;
+    color: blue;
+  }
   .hotelDistance {
     color: #0071c2;
     font-weight: 500;
@@ -150,6 +156,7 @@
     flex-direction: column;
     gap: 20px;
     position: relative;
+    height: max-content;
   }
   
   .hotelDetailsPrice > h1 {

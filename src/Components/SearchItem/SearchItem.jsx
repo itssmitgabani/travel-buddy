@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
+import useFetch from '../../hooks/useFetch';
 import './SearchItem.scss'
 
 const SearchItem = ({item , dates}) => {
@@ -7,6 +8,9 @@ const SearchItem = ({item , dates}) => {
   const handleClick = () => {
     navigate(`/hotel/${item._id}`, { state: {dates } });
   };
+
+  const {data} = useFetch(`/review/avg/${item._id}`)
+   
 
   return (
     <div className="searchItem1">
@@ -31,8 +35,8 @@ const SearchItem = ({item , dates}) => {
       </div>
       <div className="siDetails">
         <div className="siRating">
-          <span>Excellent</span>
-          <button>5.0</button>
+          <span>{data[0] && data[0].count > 3 ? "Excellent" : "Good"}</span>
+          <button>{data[0] ? data[0].count.toFixed(1) : "0.0"}</button>
         </div>
         <div className="siDetailTexts">
             <div>

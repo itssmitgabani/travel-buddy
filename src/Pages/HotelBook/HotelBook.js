@@ -13,19 +13,25 @@ import {
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Reserve from "../../Components/Reserve/Reserve";
 import useFetch from "../../hooks/useFetch.js";
+import useFetch1 from "../../hooks/useFetch1.js";
 import {AuthContext} from '../../context/AuthContext.js'
 import axios from "axios";
+import Review from "../../Components/Review/Review";
+import Loader from '../../Components/Loader/Loader'
 
 const HotelBook = () => {
   
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  const { data } = useFetch(`/room/f/${id}`);
+  const { data ,loading } = useFetch(`/room/f/${id}`);
+  const { data1 ,loading1 } = useFetch1(`/review/review/${id}`);
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const [load, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const {user} = useContext(AuthContext)
 
+  console.log(data1)
   const [dates, setDates] = useState(
     location.state === null
       ? [
@@ -47,7 +53,6 @@ const HotelBook = () => {
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate) === 0 ? 1 : dayDifference(dates[0].endDate, dates[0].startDate);
  
-console.log(days)
   const da = data[0];
   const photos = da && data[0].img;
 
@@ -57,13 +62,22 @@ console.log(days)
   };
 
   const handleChange = async () => {
-    await axios.put(`/users/updateWish/${user._id}/${da && data[0]._id}`)
+    setLoading(true)
+    try{
+      await axios.put(`/users/updateWish/${user._id}/${da && data[0]._id}`)
     
-    const newData = await axios.get(`/users/find/${user._id}`)
-    console.log(newData)
-    localStorage.setItem("user", JSON.stringify(newData.data.details));
-    alert("success")
-    window.location.reload()
+      const newData = await axios.get(`/users/find/${user._id}`)
+      console.log(newData)
+      localStorage.setItem("user", JSON.stringify(newData.data.details));
+      alert("success")
+      setLoading(false)
+      window.location.reload()
+    }
+    catch(err){
+      console.log(err)
+      setLoading(false)
+    }
+    
   };
 
   const handleMove = (direction) => {
@@ -82,6 +96,7 @@ console.log(days)
  
   const [openDate, setOpenDate] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState(0);
+  const [selectedRoomNo, setSelectedRoomNo] = useState(0);
 
   const [options, setOptions] = useState({
     adult: 1,
@@ -101,15 +116,20 @@ console.log(days)
 
   const navigate = useNavigate();
   const handleClick = () => {
+    if(user === null){
+      return alert("login first")
+    }
+    
     if(selectedRoom.length === undefined ||selectedRoom.length === 0 ){
       return alert("selectedRoom")
     }
-    navigate("/hotel/bookingDetail",{state:{ data:data[0],days,dates:dates[0],selectedRoom,options}})
+    navigate("/hotel/bookingDetail",{state:{ data:data[0],days,dates:dates[0],selectedRoom,options,selectedRoomNo}})
   };
 
 
   return (
     <div>
+      {(loading || loading1 || load) && <Loader/>}
       <div className="hotelContainer1">
         {open && (
           <div className="slider">
@@ -135,12 +155,14 @@ console.log(days)
         )}
         <div className="hotelWrapper">
           
-          <h1 className="hotelTitle">{da && data[0].hotel.hotelname}</h1>
-          <input id="heart" style={{display:'none'}} type="checkbox" onClick={handleChange}  defaultChecked={da && user.wishlist.includes(da && data[0]._id)}/>
+          
+          <h1 className="hotelTitle1">{da && data[0].hotel.hotelname}</h1>
+          {user === null ? "" :<><input id="heart" style={{display:'none'}} type="checkbox" onClick={handleChange}  defaultChecked={da && user.wishlist.includes(da && data[0]._id)}/>
 
-          <label for="heart">❤</label>
-          <span className="add">Add to Wishlist</span>
-
+<label for="heart">❤</label>
+<span className="add">Add to Wishlist</span></>
+}
+          
           <div className="hotelAddress">
             <FontAwesomeIcon icon={faLocationDot} />
             <span>{da && data[0].hotel.address}</span>
@@ -167,22 +189,36 @@ console.log(days)
           <div className="hotelDetails">
             <div className="hotelDetailsTexts">
             <h1 className="hotelDesc">Room Type:</h1>
-              <h1 className="hotelTitle">{da && data[0].category}</h1>
-              <p className="hotelDesc">Location Link</p>
-              <a style={{marginLeft:'50px'}} href={da && data[0].hotel.locationlink}>
+              <h1 className="hotelTitle2">{da && data[0].category}</h1>
+              <p className="hotelDesc">Location Link:</p>
+              <a style={{marginLeft:'50px'}} href={da && data[0].hotel.locationlink} target="_blank" className="aLink">
                 {da && data[0].hotel.locationlink}
               </a>
 
               <div style={{ display: "flex" }}>
-                Amenities: 
+              <p className="hotelDesc">Amenities:</p> 
+              </div>
+              <div style={{display:'flex',marginLeft:'50px'}}>
                 {da &&data[0].amenities.map((item) => (
-                  <p className="hotelDesc">{item}&emsp;</p>
+                  <span >{item}&emsp;</span>
                 ))}
               </div>
-              Description:
-              <p className="hotelDesc" style={{marginLeft:'50px'}}>{da && data[0].hotel.description}</p>
-              <p className="hotelDesc"> Check-in : {da && data[0].hotel.checkin}</p>
-              <p className="hotelDesc"> Check-out : {da && data[0].hotel.checkout}</p>
+              <p className="hotelDesc">Description:</p> 
+              <span style={{marginLeft:'50px'}}>{da && data[0].hotel.description}</span>
+              <p className="hotelDesc"> Check-in : {da && data[0].hotel.checkin} (24hrs)</p>
+              <p className="hotelDesc"> Check-out : {da && data[0].hotel.checkout} (24hrs)</p>
+
+              <div className="reviewContainer">
+                <h2 style={{marginTop:'20px'}}> Reviews</h2>
+                {
+                  data1.length>0 ?
+                  data1.map((item)=>(
+                    <Review info={item} key={item._id}></Review>
+                  )) :
+                 <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100px'}}>No Reviews!</div>
+                }
+
+              </div>
             </div>
             <div className="hotelDetailsPrice">
               <h1>Perfect for a {days}-night stay!</h1>
@@ -221,6 +257,9 @@ console.log(days)
                     hotelId={1}
                     setRoom={setSelectedRoom}
                     item={da && data[0].roomnumbers}
+                    setOption={setOptions}
+                    dates = {dates}
+                    setRoomNo={setSelectedRoomNo}
                   />
                 )}
               </div>

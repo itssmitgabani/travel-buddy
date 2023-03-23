@@ -51,12 +51,16 @@
         .main-nav li:hover{
             border-bottom: 2px solid #e67e22;
         }
-        
+         
         
         
 
     }
 }
+.activeSide{
+    
+    border-bottom: 2px solid #e67e22 !important;
+ }
 
 .profileMenu{
     position: absolute;

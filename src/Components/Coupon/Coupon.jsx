@@ -7,7 +7,7 @@ import useFetch from '../../hooks/useFetch';
 
 const Coupon = ({setOpen,setDiscount}) => {
     
-    const {data} = useFetch("/coupon/active")
+    const {data } = useFetch("/coupon/active")
     const handleClick =  (e) => {
       setDiscount(e.target.value)
           setOpen(false);
@@ -25,9 +25,9 @@ const Coupon = ({setOpen,setDiscount}) => {
         
           <div className="rItem">
             
-            <div className="rSelectRooms">
+            <div className="rSelectCoupons">
             {data.map((item) => (
-                <div className="room" key={item}>
+                <div className="coupon" >
                   <label >{`Coupon name : ${item.couponname}`}</label>
                   <label >{`discount : ${item.discount}%`}</label>
                   

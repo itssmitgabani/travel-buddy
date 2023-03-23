@@ -1,6 +1,6 @@
 import './NavBar.scss'
 import logo from '../../Images/logo.png'
-import {Link, useNavigate} from "react-router-dom"
+import {Link, useNavigate , useLocation} from "react-router-dom"
 import { useContext, useState } from 'react'
 import {AuthContext} from '../../context/AuthContext.js'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -9,6 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const NavBar = () => {
   const {user , dispatch} = useContext(AuthContext)
 
+  const location = useLocation();
   const [openProfile,setOpenProfile] = useState(false);
   const handleClose = () => {
     setOpenProfile(false);
@@ -49,11 +50,11 @@ const NavBar = () => {
       </div>
       <div className="right">
       <ul className="main-nav">
-                        <Link to="/"><li>Home</li></Link>
-                        <Link to="/hotel"><li>Hotel</li></Link>
-                        <Link to="/flight"><li>Flight</li></Link>
-                        <Link to="/ContactUs"><li>Contact us</li></Link>
-                        <Link to="/AboutUs"><li>About us</li></Link>
+                        <Link to="/"><li className={location.pathname==='/' ? 'activeSide' : null}>Home</li></Link>
+                        <Link to="/hotel"><li className={location.pathname.includes('/hotel')? 'activeSide' : null}>Hotel</li></Link>
+                        <Link to="/flight"><li className={location.pathname.includes('/flight')? 'activeSide' : null}>Flight</li></Link>
+                        <Link to="/ContactUs"><li className={location.pathname==='/ContactUs' ? 'activeSide' : null}>Contact us</li></Link>
+                        <Link to="/AboutUs"><li className={location.pathname==='/AboutUs' ? 'activeSide' : null}>About us</li></Link>
                         {!user && <Link to="/login"><li>sign in</li></Link>}
                         {user && <li className='pro' style={{textTransform:'none',fontSize:'100%'}} onClick={() => setOpenProfile(!openProfile)} onClose={handleClose}>
                           <div style={{display:'flex','alignItems':'flex-end',gap:'10px'}}>

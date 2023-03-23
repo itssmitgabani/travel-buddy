@@ -19,11 +19,11 @@ const Counter = ({type}) => {
             break
 
         case "hb":
-            url = "/bookHotel/count";
+            url = "/bookHotel/count/all";
             break
 
         case "fb":
-            url = "/bookAirline/count"
+            url = "/bookAirline/count/all"
             break
             default:
     }

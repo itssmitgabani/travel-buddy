@@ -49,22 +49,28 @@
     font-weight: 500;
   }
   
-  .rSelectRooms{
+  .rSelectCoupons{
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     font-size: 16px;
     color: black;
-    flex-direction: column;
     width: 250px;
+    
+    height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+    padding: 5px;
   }
   
-  .room{
+  .coupon{
     display: flex;
     border: 1px solid;
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
     height: 85px;
+    flex-direction: column;
+    width: 100%;
   }
   
   .Button {

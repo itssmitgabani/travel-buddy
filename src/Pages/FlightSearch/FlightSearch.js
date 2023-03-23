@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import SearchItem from '../../Components/SearchItemFight/SearchItem'
 import './FlightSearch.scss'
 import useFetch from '../../hooks/useFetch';
+import Loader from '../../Components/Loader/Loader';
 
 const FlightSearch = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const FlightSearch = () => {
   };
   return (
     <div>
+      {loading && <Loader/>}
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listSearch">
@@ -104,6 +106,12 @@ const FlightSearch = () => {
           </div>
           
           <div className="listResult">
+          {
+              data.length === 0 && <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column'}}>
+                
+                <h2>No Result Found!</h2>
+                </div>
+            }
           {data.map((item) => (
                   <SearchItem item={item} key={item._id} />
                 ))}

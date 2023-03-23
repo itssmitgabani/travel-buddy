@@ -3,10 +3,12 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import EmailIcon from '@mui/icons-material/Email';
 import { useState } from 'react';
 import axios from 'axios'
+import Loader from '../../Components/Loader/Loader'
 const ContactUs = () => {
 
   const [info, setInfo] = useState({});
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
@@ -14,17 +16,21 @@ const ContactUs = () => {
   const handleClick = async (e) => {
     e.preventDefault()
 try{
+  setLoading(true)
   await axios.post('/contact/create',info)
-  alert("suceess")
+  setLoading(false)
   window.location.reload()
 }
 catch(err){
+  setLoading(false)
   setError(true)
 }  
   }
 
   return (
-    <form class="form">
+    <form class="form">{
+      loading && <Loader/>
+    }
   <h2>CONTACT US</h2>
   
   <p type="Name:" className='p'><input id="name" placeholder="Write your name here.." onChange={handleChange}></input></p>

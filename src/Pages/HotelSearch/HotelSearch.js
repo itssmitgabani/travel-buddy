@@ -5,6 +5,8 @@ import './HotelSearch.scss'
 import { addDays, format } from 'date-fns';
 import SearchItem from '../../Components/SearchItem/SearchItem';
 import useFetch from '../../hooks/useFetch';
+import Loader from '../../Components/Loader/Loader'
+import Noresult from '../../Images/No.png'
 
 const HotelSearch = () => {
   const location = useLocation();
@@ -18,12 +20,13 @@ const HotelSearch = () => {
   const { data, loading, error, reFetch } = useFetch(
     `/room?city=${destination}&min=${min || 0 }&max=${max || 100000}&sort=${sort || 1}`
   );
-
+    
   const handleClick = () => {
     reFetch();
   };
   return (
     <div>
+      {loading && <Loader/>}
       <div className="listContainer">
         <div className="listWrapper">
           <div className="listSearch">
@@ -95,6 +98,12 @@ const HotelSearch = () => {
           </div>
           
           <div className="listResult">
+            {
+              data.length === 0 && <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column'}}>
+                
+                <h2>No Result Found!</h2>
+                </div>
+            }
           {data.map((item) => (
                   <SearchItem item={item} key={item._id} dates={dates}/>
                 ))}

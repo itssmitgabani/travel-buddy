@@ -3,6 +3,7 @@ import './LoginRegistration.scss'
 import {Link, useNavigate} from "react-router-dom"
 import axios from 'axios'
 import { AuthContext } from '../../context/AuthContext';
+import Loader from '../../Components/Loader/Loader'
 
 const LoginRegistration = () => {
   useEffect(() => {
@@ -29,6 +30,7 @@ const [credentials1, setCredentials1] = useState({
 	mobileno:undefined,
   });
 
+  const [load,setLoading] = useState(false)
   const { loading, error, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -58,12 +60,15 @@ const [credentials1, setCredentials1] = useState({
 const [error1,setError1] = useState(null);
   const handleClick1 = async (e) => {
 	e.preventDefault();
+	setLoading(true)
 	try {
 	  await axios.post("/auth/user/register", credentials1);
 	  setError1(null)
+	  setLoading(false)
 	  navigate("/checkEmail")
 	  
 	} catch (err) {
+		setLoading(false)
 		setError1(err.response.data.message)
 		console.log(err)
 	}
@@ -71,6 +76,7 @@ const [error1,setError1] = useState(null);
 
   return (
     <div className='loginContainer'>
+		{(load || loading) && <Loader/>}
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
 		<form action="/" className='form1'>
@@ -79,8 +85,9 @@ const [error1,setError1] = useState(null);
 			<input type="number" placeholder="Mobile No" id="mobileno" onChange={handleChange1} pattern="[0-9]{10}"/>
 			<input type="email" placeholder="Email" id="email" onChange={handleChange1}/>
 			<input type="password" placeholder="Password" id="password" onChange={handleChange1}/>
+			{error1 && <span style={{margin:'10px 0px'}}>{error1}</span>}
 			<button className='btn1' onClick={handleClick1}>Sign Up</button>
-			{error1 && <span>{error1}</span>}
+			
 		</form>
 	</div>
 	<div class="form-container sign-in-container">
@@ -88,9 +95,10 @@ const [error1,setError1] = useState(null);
 			<h1 className='h1'>Sign in</h1>
 			<input type="email" placeholder="Email" id="email" onChange={handleChange}/>
 			<input type="password" placeholder="Password" id="password" onChange={handleChange}/>
-			<Link to="/ForgotPassword" className='a'><a className='a'>Forgot your password?</a></Link>
+			{error && <span style={{margin:'10px 0px'}}>{error.message}</span>}
 			<button className='btn1' onClick={handleClick}>Sign In</button>
-			{error && <span>{error.message}</span>}
+			<Link to="/ForgotPassword" className='a'><a className='a'>Forgot your password?</a></Link>
+			
 		</form>
 	</div>
 	<div class="overlay-container">

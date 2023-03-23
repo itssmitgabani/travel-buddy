@@ -1,0 +1,53 @@
+.hotelContainer3{
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 10px 10px 15px 0 rgba(0,0,0,0.3);
+display: flex;
+min-height: 47vh;
+
+.left{
+    flex: 1;
+
+    img{
+        height: 300px;
+        width: 600px;
+        object-fit:contain;
+        overflow: hidden;
+        background-attachment: top;
+    }
+}
+
+.right{
+    flex:1;
+
+    
+    .item{
+        display: flex;
+        gap: 50px;
+
+        b{
+            margin-right: 20px;
+        }
+        span{
+            width: 33%;
+        }
+        
+    .cellWithStatus{
+        padding: 5px;
+        border-radius: 5px;
+
+        &.activated{
+            color: green;
+            background-color: rgba(0,128,0,0.05);
+        }
+
+        &.deactivated{
+            color: crimson;
+            background-color: rgba(255, 0, 0, 0.05);
+        }
+    }
+    }
+}
+
+}
