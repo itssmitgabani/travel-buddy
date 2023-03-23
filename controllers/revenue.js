@@ -55,7 +55,7 @@ import HotelBooking from "../models/hotelbooking.js";
 ]);
     const totalR = airlinebookings[0].total + hotelbookings[0].total;
     const totalD = airlinebookings[0].totalDiscount + hotelbookings[0].totalDiscount;
-    const inc = totalR * 20 / 100 - totalD
+    const inc = totalR * 10 / 100 - totalD
 const revenue = {
     total:totalR,
     totalDiscount:totalD,

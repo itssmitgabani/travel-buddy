@@ -9,6 +9,7 @@ import jwt from "jsonwebtoken";
 import validator from 'validator';
 import crypto from "crypto"
 import { sendEmail } from "../utils/email.js";
+import payment from "../models/payment.js";
 
 
 export const adminregister = async (req, res, next) => {
@@ -60,10 +61,65 @@ export const adminlogin = async (req, res, next) => {
   }
 };
 
+export const adminPassword = async (req, res, next) => {
+  try {
+    const admin = await Admin.findOne({ email: req.body.email });
+    if (!admin) return next(createError(404, "user not found!"));
+    
+    let token = await new Token({
+      userId: admin._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
+    const message = `${process.env.ADMIN_URL}/passwordReset?token=${token.token}&id=${admin._id}`;
+    await sendEmail(admin.email, "Verify Email", message);
+    
+    res.status(200).send("link sent to your E-mail.");
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const adminResetPassword = async (req, res, next) => {
+  try {
+    
+    const admin = await Admin.findOne({ _id: req.body.id });
+    if (!admin) return next(createError(400, "invalid link!"));
+    
+    const token = await Token.findOne({
+      userId: admin._id,
+      token: req.body.token,
+    });
+    if (!token) return next(createError(400, "invalid link!"));
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+
+    
+    await Admin.updateOne(
+      { _id: admin._id },
+      { $set: { password: hash } },
+      { new: true }
+    );
+
+    await sendEmail(admin.email, "Verify Email", "password changed successfully!");
+
+    await token.deleteOne();
+    res.status(200).send("password changed successfully!");
+
+  } catch (err) {
+    next(err);
+  }
+};
+
 
 
 export const airlineregister = async (req, res, next) => {
   try {
+
+    if(!req.body.email && !req.body.email){
+      return next(createError(401, "All Fields Required!"));
+    }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
@@ -75,6 +131,11 @@ export const airlineregister = async (req, res, next) => {
 
     await newAirline.save();
 
+    const newPayment = new payment({
+      a_id:newAirline._id
+    })
+
+    await newPayment.save();
     
     let token = await new Token({
       userId: newAirline._id,
@@ -86,7 +147,7 @@ export const airlineregister = async (req, res, next) => {
 
     res.status(200).send("Airline has been created.");
   } catch (err) {
-    next(err);
+    next(createError(401, "Email Already Exist!"));
   }
 };
 
@@ -126,6 +187,9 @@ export const airlinelogin = async (req, res, next) => {
       if(!airline.verified){
         return next(createError(400, "please check your email and verify your account"));
       }
+      if(!airline.status){
+        return next(createError(400, "Aorry your account is De-Activated pleae contact admin!"));
+      }
     const token = jwt.sign(
       { id: airline._id},
       process.env.JWT
@@ -143,6 +207,56 @@ export const airlinelogin = async (req, res, next) => {
   }
 };
 
+export const airlinePassword = async (req, res, next) => {
+  try {
+    const airline = await Airline.findOne({ email: req.body.email });
+    if (!airline) return next(createError(404, "user not found!"));
+    
+    let token = await new Token({
+      userId: airline._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
+    const message = `${process.env.AIRLINE_URL}/passwordReset?token=${token.token}&id=${airline._id}`;
+    await sendEmail(airline.email, "Verify Email", message);
+    
+    res.status(200).send("link sent to your E-mail.");
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const airlineResetPassword = async (req, res, next) => {
+  try {
+    
+    const airline = await Airline.findOne({ _id: req.body.id });
+    if (!airline) return next(createError(400, "invalid link!"));
+    
+    const token = await Token.findOne({
+      userId: airline._id,
+      token: req.body.token,
+    });
+    if (!token) return next(createError(400, "invalid link!"));
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+
+    
+    await User.updateOne(
+      { _id: airline._id },
+      { $set: { password: hash } },
+      { new: true }
+    );
+
+    await sendEmail(airline.email, "Verify Email", "password changed successfully!");
+
+    await token.deleteOne();
+    res.status(200).send("password changed successfully!");
+
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const hotelregister = async (req, res, next) => {
   try {
@@ -164,6 +278,12 @@ export const hotelregister = async (req, res, next) => {
 
     await newHotel.save();
 
+    const newPayment = new payment({
+      h_id:newHotel._id
+    })
+
+    await newPayment.save();
+    
     let token = await new Token({
       userId: newHotel._id,
       token: crypto.randomBytes(32).toString("hex"),
@@ -216,6 +336,9 @@ export const hotellogin = async (req, res, next) => {
       if(!hotel.verified){
         return next(createError(400, "please check your email and verify your account"));
       }
+      if(!hotel.status){
+        return next(createError(400, "Aorry your account is De-Activated pleae contact admin!"));
+      }
     const token = jwt.sign(
       { id: hotel._id},
       process.env.JWT
@@ -228,6 +351,58 @@ export const hotellogin = async (req, res, next) => {
       })
       .status(200)
       .json({ details: { ...otherDetails }});
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+export const hotelPassword = async (req, res, next) => {
+  try {
+    const hotel = await Hotel.findOne({ email: req.body.email });
+    if (!hotel) return next(createError(404, "user not found!"));
+    
+    let token = await new Token({
+      userId: hotel._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
+    const message = `${process.env.HOTEL_URL}/passwordReset?token=${token.token}&id=${hotel._id}`;
+    await sendEmail(hotel.email, "Verify Email", message);
+    
+    res.status(200).send("link sent to your E-mail.");
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const hotelResetPassword = async (req, res, next) => {
+  try {
+    
+    const hotel = await Hotel.findOne({ _id: req.body.id });
+    if (!hotel) return next(createError(400, "invalid link!"));
+    
+    const token = await Token.findOne({
+      userId: hotel._id,
+      token: req.body.token,
+    });
+    if (!token) return next(createError(400, "invalid link!"));
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+
+    
+    await User.updateOne(
+      { _id: hotel._id },
+      { $set: { password: hash } },
+      { new: true }
+    );
+
+    await sendEmail(hotel.email, "Verify Email", "password changed successfully!");
+
+    await token.deleteOne();
+    res.status(200).send("password changed successfully!");
+
   } catch (err) {
     next(err);
   }
@@ -265,7 +440,7 @@ export const userregister = async (req, res, next) => {
       token: crypto.randomBytes(32).toString("hex"),
     }).save();
     
-    const message = `${process.env.BASE_URL}/auth/user/verify/${newUser.id}/${token.token}`;
+    const message = `${process.env.BASE_URL}/auth/user/verify/${newUser._id}/${token.token}`;
     await sendEmail(newUser.email, "Verify Email", message);
 
 
@@ -314,6 +489,9 @@ export const userLogin = async (req, res, next) => {
       if(!user.verified){
         return next(createError(400, "please check your email and verify your account"));
       }
+      if(!user.status){
+        return next(createError(400, "Aorry your account is De-Activated pleae contact admin!"));
+      }
     const token = jwt.sign(
       { id: user._id},
       process.env.JWT
@@ -326,6 +504,57 @@ export const userLogin = async (req, res, next) => {
       })
       .status(200)
       .json({ details: { ...otherDetails }});
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const userPassword = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return next(createError(404, "user not found!"));
+    
+    let token = await new Token({
+      userId: user._id,
+      token: crypto.randomBytes(32).toString("hex"),
+    }).save();
+    const message = `${process.env.CLIENT_URL}/passwordReset?token=${token.token}&id=${user._id}`;
+    await sendEmail(user.email, "Verify Email", message);
+    
+    res.status(200).send("link sent to your E-mail.");
+
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const userResetPassword = async (req, res, next) => {
+  try {
+    
+    const user = await User.findOne({ _id: req.body.id });
+    if (!user) return next(createError(400, "invalid link!"));
+    
+    const token = await Token.findOne({
+      userId: user._id,
+      token: req.body.token,
+    });
+    if (!token) return next(createError(400, "invalid link!"));
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+
+    
+    await User.updateOne(
+      { _id: user._id },
+      { $set: { password: hash } },
+      { new: true }
+    );
+
+    await sendEmail(user.email, "Verify Email", "password changed successfully!");
+
+    await token.deleteOne();
+    res.status(200).send("password changed successfully!");
+
   } catch (err) {
     next(err);
   }

@@ -113,7 +113,7 @@ export const getAirline = async (req, res, next) => {
                 seats: 1,
                 totalAmt: 1,
                 discountAmt: 1,
-                bookingdate: 1,
+                createdAt: 1,
             
           },
         },
@@ -173,7 +173,7 @@ export const getAirline = async (req, res, next) => {
                 seats: 1,
                 totalAmt: 1,
                 discountAmt: 1,
-                bookingdate: 1,
+                createdAt: 1,
                 verified:1,
             
           },
@@ -230,6 +230,9 @@ export const getAirline = async (req, res, next) => {
       else{
         if(req.body.newpassword!==req.body.Cpassword){   
           return next(createError(401, "password not matched!"));
+        }
+        if(req.body.newpassword.length <= 0){   
+          return next(createError(401, "password can not empty!"));
         }
         else{
           

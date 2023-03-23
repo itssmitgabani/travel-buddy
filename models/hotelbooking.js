@@ -8,6 +8,10 @@ const HotelBookingSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "Hotel"
   },
+  r_id: {
+    type: Schema.Types.ObjectId,
+    ref: "Room"
+  },
   adult: {
     type: Number,
     required: true,
@@ -31,7 +35,7 @@ const HotelBookingSchema = new mongoose.Schema({
   discountAmt: {
     type: Number,
     required: true,
-    min: 1,    
+    min: 0,    
   },
   bookingdate:{
     type:Date,
@@ -41,7 +45,19 @@ const HotelBookingSchema = new mongoose.Schema({
     type:Date,
     required:true,
   },
+  roomNumber:{
+    type:[Schema.Types.ObjectId],
+    ref:"RoomNumbers"
+  },
+  roomNumberNo:{
+    type:[String],
+    ref:"RoomNumbers"
+  },
   verified: {
+    type: Boolean,
+    default: false,
+  },
+  reviewed: {
     type: Boolean,
     default: false,
   },

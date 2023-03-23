@@ -13,6 +13,10 @@ const FlightSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    availableSeats: {
+      type: Number,
+      required: true,
+    },
     checkin: {
       type: Number,
       required: true,

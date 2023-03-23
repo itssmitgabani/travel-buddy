@@ -48,6 +48,16 @@ export const updateFlight = async (req,res,next)=>{
         next(createError(500, "All fields required"))
     }
 }
+
+export const updateAvailableSeats = async (req,res,next)=>{
+    try{
+        const flight = await Flight.findByIdAndUpdate(req.params.id,{$inc: {availableSeats: -req.body.seats}},{ new: true }
+          );
+        res.status(200).json(flight);
+    }catch(err){
+        next(createError(500, "All fields required"))
+    }
+}
 export const getTotalFlight = async (req,res,next)=>{
     try{
         
@@ -75,6 +85,9 @@ export const findFlightByDate = async (req, res, next) => {
   const a = parseInt(min)
   const b = parseInt(max)
   const s = parseInt(sort)
+  var regexFrom = new RegExp(["^", from, "$"].join(""), "i");
+  var regexTo = new RegExp(["^", to, "$"].join(""), "i");
+  
   
   let newDate = new Date(date)
 let day = newDate.getDate();
@@ -98,8 +111,8 @@ let format4 = year + "-" + month + "-" + day;
         {
           $match:
             {
-              sourcecity : from,
-              destinationcity : to,
+              sourcecity : regexFrom,
+              destinationcity : regexTo,
               ddate:format4,
               rate: { $gte: a , $lte : b}
             },

@@ -239,6 +239,9 @@ export const UpdatePassword = async (req, res, next) => {
       if(req.body.newpassword!==req.body.Cpassword){   
         return next(createError(401, "password not matched!"));
       }
+      if(req.body.newpassword.length <= 0){   
+        return next(createError(401, "password can not empty!"));
+      }
       else{
         
         const salt = bcrypt.genSaltSync(10);

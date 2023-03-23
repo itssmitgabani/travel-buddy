@@ -56,3 +56,135 @@ export const getFeedback = async (req, res, next) => {
       next(err);
     }
   };
+  export const getFeedbacksAdmin = async (req, res, next) => {
+    try {
+      const feedbacks = await Feedback.aggregate([
+        {
+          $match:{
+            for : "WebSite"
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "u_id",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind:
+            {
+              path: "$user",
+            },
+        },
+        {
+          $addFields:
+            
+            {
+              username: "$user.username",
+              img: "$user.img",
+            },
+        },
+        {
+          $project:
+          {
+            feedback:1,
+            username:1,
+            img:1,
+          }
+        }
+      ]);
+      res.status(200).json(feedbacks);
+    } catch (err) {
+      next(err);
+    }
+  };
+  export const getFeedbacksAirline = async (req, res, next) => {
+    try {
+      const feedbacks = await Feedback.aggregate([
+        {
+          $match:{
+            for : "Airline"
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "u_id",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind:
+            {
+              path: "$user",
+            },
+        },
+        {
+          $addFields:
+            
+            {
+              username: "$user.username",
+              img: "$user.img",
+            },
+        },
+        {
+          $project:
+          {
+            feedback:1,
+            username:1,
+            img:1,
+          }
+        }
+      ]);
+      res.status(200).json(feedbacks);
+    } catch (err) {
+      next(err);
+    }
+  };
+  export const getFeedbacksHotel = async (req, res, next) => {
+    try {
+      const feedbacks = await Feedback.aggregate([
+        {
+          $match:{
+            for : "Hotel"
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "u_id",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind:
+            {
+              path: "$user",
+            },
+        },
+        {
+          $addFields:
+            
+            {
+              username: "$user.username",
+              img: "$user.img",
+            },
+        },
+        {
+          $project:
+          {
+            feedback:1,
+            username:1,
+            img:1,
+          }
+        }
+      ]);
+      res.status(200).json(feedbacks);
+    } catch (err) {
+      next(err);
+    }
+  };

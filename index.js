@@ -14,6 +14,9 @@ import revenueRoute from "./routes/revenue.js";
 import roomRoute from "./routes/room.js";
 import flightRoute from "./routes/flight.js";
 import contactRoute from "./routes/contact.js";
+import reviewRoute from "./routes/review.js";
+import paymentRoute from "./routes/payment.js";
+import bankRoute from "./routes/bank.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -51,6 +54,9 @@ app.use("/api/revenue", revenueRoute);
 app.use("/api/room", roomRoute);
 app.use("/api/flight", flightRoute);
 app.use("/api/contact", contactRoute);
+app.use("/api/review", reviewRoute);
+app.use("/api/payment", paymentRoute);
+app.use("/api/bank", bankRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

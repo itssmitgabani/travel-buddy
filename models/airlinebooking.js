@@ -8,6 +8,10 @@ const AirlineBookingSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: "Airline"
   },
+  f_id: {
+    type: Schema.Types.ObjectId,
+    ref: "Flight"
+  },
   totalAmt: {
     type: Number,
     required: true,
@@ -16,16 +20,12 @@ const AirlineBookingSchema = new mongoose.Schema({
   discountAmt: {
     type: Number,
     required: true,
-    min: 1,
+    min: 0,
   },
   seats: {
     type: Number,
     required: true,
     min: 1,
-  },
-  bookingdate:{
-    type:Date,
-    required:true,
   },
   verified: {
     type: Boolean,

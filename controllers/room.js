@@ -2,6 +2,8 @@ import mongoose, { Mongoose } from "mongoose";
 import Hotel from "../models/hotel.js";
 import Room from "../models/room.js";
 import { createError } from "../utils/error.js";
+import axios from 'axios'
+
 export const addRoom = async (req,res,next)=>{
     const newRoom = new Room(req.body);
     try{
@@ -73,6 +75,7 @@ export const findRoomByCity = async (req, res, next) => {
   const a = parseInt(min)
   const b = parseInt(max)
   const s = parseInt(sort)
+  var regex = new RegExp(["^", city, "$"].join(""), "i");
   try {
     const rooms = await Room.aggregate(
       [
@@ -107,7 +110,7 @@ export const findRoomByCity = async (req, res, next) => {
         {
           $match:
             {
-              city : city,
+              city : regex,
               price: { $gte: a , $lte : b}
             },
         },
@@ -201,5 +204,93 @@ export const findWishlistRoom = async (req, res, next) => {
     res.status(200).json(rooms[0]);
   } catch (err) {
     next(err);
+  }
+};
+
+export const updateRoomAvailability = async (req, res, next) => {
+  try {
+    await Room.updateOne(
+      { "roomnumbers._id": req.params.id },
+      {
+        $push: {
+          "roomnumbers.$.unavailableDates": req.body.dates
+        },
+      }
+    );
+    res.status(200).json("Room status has been updated.");
+  } catch (err) {
+    next(err);
+  }
+};
+export const getRoomNum = async (req, res, next) => {
+  try {
+    const room = await Room.aggregate(
+      [
+        {
+          $unwind:
+            {
+              path: "$roomnumbers",
+            },
+        },
+        {
+          $match:
+            {
+              "roomnumbers._id": new mongoose.Types.ObjectId(req.params.id)
+              
+            },
+        },
+        {
+          $project:
+            {
+              rnum: "$roomnumbers.number",
+              _id: 0,
+            },
+        },
+      ]
+    );
+    
+    res.status(200).json(room[0].rnum);
+  } catch (err) {
+    next(err);
+  }
+};
+export const getRoomNum1 = async (req, res, next) => {
+  const list = req.query.num
+  let l
+  try {
+    if(list !== undefined){
+    const num = await Promise.all( list.map( async(item) => {
+      const room = await Room.aggregate(
+        [
+          {
+            $unwind:
+              {
+                path: "$roomnumbers",
+              },
+          },
+          {
+            $match:
+              {
+                "roomnumbers._id": new mongoose.Types.ObjectId(item)
+                
+              },
+          },
+          {
+            $project:
+              {
+                rnum: "$roomnumbers.number",
+                _id: 0,
+              },
+          },
+        ]
+      );
+      l = room
+      
+  }
+  ));
+    res.status(200).json(l);
+  } }catch (err) {
+    
+    console.log(err)
   }
 };
