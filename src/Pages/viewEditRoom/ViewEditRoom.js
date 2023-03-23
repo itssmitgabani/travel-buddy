@@ -7,13 +7,15 @@ import useFetch from "../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
+import Loader from '../../Components/Loader/Loader'
 
 const ViewEditRoom = () => {
   
   const {user} = useContext(AuthContext)
   const r_id = useParams()
-  const {data} = useFetch(`/room/find/${r_id.id}`)
+  const {data , loading} = useFetch(`/room/find/${r_id.id}`)
   const [img,setImg] = useState(data.img)
+  const [load,setLoading] = useState(false)
     const [editable,setEditable] = useState(false);
     const [selectedImage, setSelectedImage] = useState([data.img]);
     const onSelectedFile = (e) => {
@@ -56,6 +58,7 @@ const ViewEditRoom = () => {
     };
     const handleclick = async (e) => {
       e.preventDefault();
+      setLoading(true)
       try {
         const list = await Promise.all(
         img.map(async (file) => {
@@ -118,10 +121,14 @@ const ViewEditRoom = () => {
         }
 
       await axios.put(`/room/update/${r_id.id}`,newhotel)
-      } catch (err) {console.log(err)}
+      setLoading(false)
+      window.location.reload()
+      } catch (err) {console.log(err)
+      setLoading(false)}
     };
   return (
     <div className="viewRoomContainer">
+      {(loading || load) && <Loader/> }
       <h1>Room Details</h1>
       <button className="editable" onClick={()=>setEditable(!editable)} style={editable ? {color:"white",backgroundColor:"red"}:{color:"green" , backgroundColor:"greenyellow"}}>
         {editable ? <CloseIcon/> : <EditIcon />}

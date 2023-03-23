@@ -5,11 +5,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { AuthContext } from "../../context/AuthContext.js";
 import axios from 'axios'
+import Loader from '../../Components/Loader/Loader'
 
 const HotelProfile = () => {
   const {user} = useContext(AuthContext)
   const [editable, setEditable] = useState(false);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [photoURL, setPhotoURL] = useState(
     user.img
   );
@@ -29,6 +31,7 @@ const HotelProfile = () => {
       };
   const handleclick = async (e) => {
     e.preventDefault()
+    setLoading(true)
     const data = new FormData()
     data.append("file",file)
     data.append("upload_preset","upload")
@@ -51,14 +54,17 @@ const HotelProfile = () => {
       
       const newData = await axios.get(`/hotels/find/${user._id}`)
       localStorage.setItem("hotel", JSON.stringify(newData.data));
+      setLoading(false)
     }catch(err){
       console.log(err)
+      setLoading(false)
     }
     window.location.reload();
 
   };
   return (
     <div className="pContainer">
+      {loading && <Loader/>}
       <div className="top">
         <h1>Hotel Profile</h1>
         <button

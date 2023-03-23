@@ -107,6 +107,14 @@ export const bookingColumns = [
       field: "username",
       headerName: "User name",
       width: 140,
+      renderCell: (params) => {
+        return (
+          <div className="cellWithImg">
+            <img className="cellImg" src={params.row.img} alt="avatar" />
+            {params.row.username}
+          </div>
+        );
+      },
     },
     { field: "feedback", headerName: "feedback", width: 1000,
       renderCell : (params) => (

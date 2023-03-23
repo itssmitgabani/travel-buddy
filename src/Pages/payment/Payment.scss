@@ -1,0 +1,52 @@
+.paymentContainer{
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+    h1 {
+        color: gray;
+      }
+
+      .PaymentC{
+        box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+        flex:1;
+        padding:10px;
+        border-radius:10px;
+        border: 1px solid;
+      }
+      .payButton{
+        width: 50%;
+        height: 50px;
+        border-radius: 10px;
+        font-size: 15px;
+        margin: 10px;
+        cursor: pointer;
+      }
+      .g{
+        color: green;
+        background-color: greenyellow;
+      }
+      .b{
+        color: blue;
+        background-color: rgba(0, 106, 255, 0.386);
+      }
+      .dis{
+        display: none;
+      }
+      .count{
+        font-weight: 300;
+        text-align: end;
+        margin: 15px;
+        color: black;
+      }
+
+}
+input[type="number"] {
+  -webkit-appearance: textfield;
+     -moz-appearance: textfield;
+          appearance: textfield;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+}

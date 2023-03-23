@@ -3,12 +3,16 @@ import { useContext, useState } from "react";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
+import Loader from '../../Components/Loader/Loader'
+import {useNavigate } from 'react-router-dom'
 
 const AddNew = () => {
   
   const {user} = useContext(AuthContext)
   const [selectedImage, setSelectedImage] = useState([]);
   const [files, setFiles] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState(false);
   const onSelectedFile = (e) => {
     const selectedFiles = e.target.files;
     const selectedFilesArray = Array.from(selectedFiles);
@@ -35,7 +39,7 @@ const AddNew = () => {
   
 
   const [info, setInfo] = useState({});
-
+const navigate = useNavigate()
   const [rooms, setRooms] = useState([]);
   const [amenities, setAmenities] = useState([]);
   const handleChange = (e) => {
@@ -44,6 +48,7 @@ const AddNew = () => {
 
   const handleclick = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const list = await Promise.all(
       files.map(async (file) => {
@@ -70,11 +75,19 @@ const AddNew = () => {
       
       const newData = await axios.get(`/hotels/find/${user._id}`)
       localStorage.setItem("hotel", JSON.stringify(newData.data));
-    window.location.reload();
-    } catch (err) {console.log(err)}
+      setErr(false)
+      setLoading(false)
+      window.location.reload()
+      navigate("/rooms")
+      
+    } catch (err) {
+      setLoading(false)
+      console.log(err)
+    setErr(true)}
   };
   return (
     <div className="addRoomContainer">
+      {loading && <Loader/>}
       <h1>Add Room Details</h1>
       <div className="addRoomWrapper">
         <div className="left">
@@ -190,6 +203,7 @@ const AddNew = () => {
               <input type="text" placeholder="separate by ',' (comma)" id="amenities"onChange={(e) => setAmenities(e.target.value)}/>
             </div>
             <div className="item" style={{width : "100%"}}> 
+            {err && <div style={{display:'flex',justifyContent:'center',marginTop:'15px'}}> <span> All Fields required</span></div>}
               <button className="addButton" onClick={handleclick}>Add</button>
             </div>
           </div>

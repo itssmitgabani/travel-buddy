@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch'
 import './RoomCard.scss'
+import Loader from '../Loader/Loader'
 
 const RoomCard = ({r_id}) => {
 
-    const {data} = useFetch(`/room/find/${r_id}`)
+    const {data ,loading} = useFetch(`/room/find/${r_id}`)
     const noofrooms = data.roomnumbers
     const im = data.img
   return (
     <div className="roomWrapper">
+        {loading && <Loader/>}
         <div className="roomType"><span>{data.category}</span></div>
         <div className="roomImage">
             <img src={im && data.img[0]} alt="roomImage" />

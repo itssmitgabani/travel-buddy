@@ -14,6 +14,8 @@ import ForgotPassword from './Pages/ForgotPassword/ForgotPassword';
 import HotelProfile from './Pages/HotelProfile/HotelProfile';
 import LoginRegistration from './Pages/LoginRegistration/LoginRegistration';
 import NoPage from './Pages/NoPage/NoPage';
+import Payment from './Pages/payment/Payment';
+import ResetPassword from './Pages/ResetPassword/ResetPassword';
 import Rooms from './Pages/Rooms/Rooms';
 import ViewBooking from './Pages/ViewBooking/ViewBooking';
 import ViewEditRoom from './Pages/viewEditRoom/ViewEditRoom';
@@ -42,9 +44,9 @@ function App() {
   }
   return (
     <div className='dashboard'>
-        {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword" && location.pathname !== "/checkEmail" )&& <SideBar/>}
+        {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword"&& location.pathname !== "/passwordReset" && location.pathname !== "/checkEmail" )&& <SideBar/>}
       <div className="homeContainer">
-      {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword" && location.pathname !== "/checkEmail")&& <NavBar/>}
+      {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword"&& location.pathname !== "/passwordReset" && location.pathname !== "/checkEmail")&& <NavBar/>}
         <Routes>
         <Route path="/">
         <Route path="login" element={<LoginRegistration />} />
@@ -66,7 +68,9 @@ function App() {
             
           <Route path="feedback" element={<ProtectedRoute><DetailsRoute><Feedback /></DetailsRoute></ProtectedRoute>} />
           <Route path="forgotPassword" element={<ForgotPassword />} />
+          <Route path="passwordReset" element={<ResetPassword />} />
           <Route path="changePassword" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
+          <Route path="payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
           <Route path="*" element={<ProtectedRoute><NoPage /></ProtectedRoute>} />
         </Route>
       </Routes>

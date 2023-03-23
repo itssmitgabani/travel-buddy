@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch.js'
 import {feedbackColumns,feedbackRows} from '../../dataTableSrc.js'
 import './Feedback.scss'
+import Loader from '../../Components/Loader/Loader'
 const Feedback = () => {
   
-  const {data} = useFetch('/feedback')
+  const {data , loading} = useFetch('/feedback/hotel')
   return (
     <div className="feedbackContainer">
+      {loading && <Loader/>}
       <h1>Feedbacks:</h1>
       <div style={{ height: 400, width: '100%' }}>
                 <DataGrid

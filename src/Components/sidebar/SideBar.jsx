@@ -11,6 +11,7 @@ import {Link , useLocation, useNavigate} from 'react-router-dom'
 import KingBed from '@mui/icons-material/KingBed';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import PaymentIcon from '@mui/icons-material/Payment';
 
 const SideBar = () => {
   const location = useLocation();
@@ -49,6 +50,12 @@ const SideBar = () => {
           <li className={location.pathname.includes('/bookings') ? 'activeSide' : null}>
             <BookingIcon className='icon'/>
             <span>Bookings</span>
+          </li>
+          </Link>
+          <Link to="/payment" className='Link'> 
+          <li className={location.pathname.includes('/payment') ? 'activeSide' : null}>
+            <PaymentIcon className='icon'/>
+            <span>Payment</span>
           </li>
           </Link>
           <Link to="/feedback" className='Link'> 

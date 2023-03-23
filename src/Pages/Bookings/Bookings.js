@@ -5,6 +5,7 @@ import {bookingColumns,bookingRows} from '../../dataTableSrc.js'
 import { useContext, useEffect, useState } from 'react';
 import useFetch from '../../hooks/useFetch';
 import { AuthContext } from '../../context/AuthContext';
+import Loader from '../../Components/Loader/Loader'
 
 const Bookings = () => {
   const ActionColumn = [
@@ -24,7 +25,7 @@ const Bookings = () => {
 
 const {user } = useContext(AuthContext);
 
-const {data} = useFetch(`/hotels/getBookings/${user._id}`);
+const {data , loading} = useFetch(`/hotels/getBookings/${user._id}`);
 const [data1,setData1] = useState(data);
 useEffect(() => { setData1(data)}, [data] )
 const handleChange = (event) => {
@@ -32,6 +33,7 @@ const handleChange = (event) => {
 };
   return (
     <div className="bookingsContainer">
+      {loading && <Loader/>}
       <h1>Bookings:</h1>
       <input type="text" placeholder='Search by Customer name'style={{ marginTop:'20px' ,width:'20%',height:'30px',borderRadius:'10px',padding:'5px 15px'}}
         onChange={handleChange}

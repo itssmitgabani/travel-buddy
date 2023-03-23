@@ -4,6 +4,7 @@ import { useContext, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.js";
 import axios from 'axios';
+import Loader from '../../Components/Loader/Loader'
 
 const LoginRegistration = () => {
 	
@@ -18,6 +19,7 @@ const LoginRegistration = () => {
 	  });
 	
 	  const { loading, error, dispatch } = useContext(AuthContext);
+	  const [load,setLoading] = useState(false)
 	
 	  const navigate = useNavigate();
 	
@@ -29,15 +31,18 @@ const LoginRegistration = () => {
 	  };
 	
 	  const handleClick = async (e) => {
+		
 		e.preventDefault();
 		dispatch({ type: "LOGIN_START" });
 		try {
 		  const res = await axios.post("/auth/hotel/login", credentials);
 		  
 			dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+			
 			navigate("/");
 		  
 		} catch (err) {
+			
 		  dispatch({ type: "LOGIN_FAILURE", payload: err.response.data });
 		}
 	  };
@@ -46,20 +51,24 @@ const LoginRegistration = () => {
   const [error1,setError1] = useState(null);
 	  const handleClick1 = async (e) => {
 		e.preventDefault();
+		setLoading(true)
 		try {
 		  await axios.post("/auth/hotel/register", credentials1);
 		  setError1(null)
+		  setLoading(false)
 		  navigate("/checkEmail")
 		  
 		} catch (err) {
+			setLoading(false)
 			setError1(err.response.data.message)
-			console.log(error1)
+			
 		}
 	  };
 	
 	
   return (
     <div className="container">
+		{(loading || load) && <Loader/> }
     <div className="main">  	
 		<input type="checkbox" id="chk" aria-hidden="true"/>
 
@@ -70,7 +79,7 @@ const LoginRegistration = () => {
 					<input type="email" id="email" placeholder="Email"onChange={handleChange1} required/>
 					<input type="password" id="password" placeholder="Password"onChange={handleChange1} required/>
 					<button disabled={loading} onClick={handleClick1}>Sign up</button>
-					{error1 && <span>{error1}</span>}
+					{error1 && <div style={{display:'flex',justifyContent:'center',marginTop:'15px'}}><span>{error1}</span></div>}
 				</form>
 			</div>
 
@@ -80,7 +89,7 @@ const LoginRegistration = () => {
 					<input type="email" id="email" placeholder="Email" onChange={handleChange} required/>
 					<input type="password" id="password" placeholder="Password"onChange={handleChange} required/>
 					<button disabled={loading} onClick={handleClick} >Login</button>
-					{error && <span>{error.message}</span>}
+					{error && <div style={{display:'flex',justifyContent:'center',marginTop:'15px'}}><span>{error.message}</span></div>}
           <div className='ForgotPassword'>
         <a href="/ForgotPassword">Forgot your password?</a>
         </div>
