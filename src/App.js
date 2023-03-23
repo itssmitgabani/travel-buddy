@@ -17,6 +17,8 @@ import CheckEmailMessage from '../../travel-buddy-airline/src/Pages/checkEmailMe
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import ViewBooking from './Pages/ViewBooking/ViewBooking';
+import PasswordReset from './Pages/PasswordReset/PasswordReset';
+import Payment from './Pages/payment/Payment';
 
 function App() {
   
@@ -42,9 +44,9 @@ function App() {
   }
   return (
     <div className='dashboard'>
-        {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword" && location.pathname !== "/checkEmail" )&& <SideBar/>}
+        {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword" &&location.pathname !== "/passwordReset" && location.pathname !== "/checkEmail" )&& <SideBar/>}
       <div className="homeContainer">
-      {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword" && location.pathname !== "/checkEmail" )&& <NavBar/>}
+      {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword" &&location.pathname !== "/passwordReset" && location.pathname !== "/checkEmail" )&& <NavBar/>}
         <Routes>
         <Route path="/">
         <Route path="login" element={<LoginRegistration />} />
@@ -64,7 +66,9 @@ function App() {
           </Route> 
           <Route path="feedback" element={<ProtectedRoute><DetailsRoute><Feedback /></DetailsRoute></ProtectedRoute>} />
           <Route path="forgotPassword" element={<ForgotPassword />} />
+          <Route path="passwordReset" element={<PasswordReset />} />
           <Route path="changePassword" element={<ProtectedRoute><DetailsRoute><ChangePassword /></DetailsRoute></ProtectedRoute>} />
+          <Route path="payment" element={<ProtectedRoute><DetailsRoute><Payment /></DetailsRoute></ProtectedRoute>} />
           <Route path="*" element={<ProtectedRoute><NoPage /></ProtectedRoute>} />
         </Route>
       </Routes>

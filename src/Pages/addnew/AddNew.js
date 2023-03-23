@@ -3,6 +3,9 @@ import { useContext, useState } from "react";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios"
+import Loader from '../../Components/Loader/Loader'
+import {useNavigate} from "react-router-dom"
+
 const AddNew = () => {
 
   const [options, setOptions] = useState({
@@ -23,30 +26,35 @@ const AddNew = () => {
   
   const {user} = useContext(AuthContext)
   const [info, setInfo] = useState({});
+  const [loading, setLoading] = useState(false);
   const handleChange = (e) => {
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
-  
+  const navigate = useNavigate()
   const handleclick = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const newflight = {
         ...info,
         ...options,
-        a_id:user._id
+        a_id:user._id,
+        availableSeats:info.seats
       };
-      console.log(newflight)
       await axios.post('/flight/add',newflight)
       
       const newData = await axios.get(`/airlines/find/${user._id}`)
       localStorage.setItem("airline", JSON.stringify(newData.data));
-    window.location.reload();
+      setLoading(false)
+     navigate("/flights")
     } catch (error) {console.log(error)
+      setLoading(false)
     setErr(true)}
   };
   return (
     <div className="addRoomContainer">
+      {loading && <Loader/> }
       <h1>Add Flight Details</h1>
       <div className="addRoomWrapper">
         <div className="right">
@@ -69,8 +77,8 @@ const AddNew = () => {
             </div>
             <div className="item">
               <label htmlFor="">Arrival Date-Time : </label>
-              <input type="datetime-local" id="arrival" onChange={handleChange} min={new Date().toISOString().slice(0, 16)} defaultValue = {new Date().toISOString().slice(0, 16)}/>
-            </div>
+              <input type="datetime-local" id="arrival" onChange={handleChange} min={info.departure ? info.departure :new Date().toISOString().slice(0, 16)} defaultValue = { info.departure } disabled={ !info.departure}/>
+            </div>{console.log(info.departure)}
             <div className="item">
               <label htmlFor="">Weightage Allowance : </label>
               <span className="allowance" style={{ cursor: "pointer" , paddingLeft : "10px", color:"gray"}} onClick={()=>setOpenOpton(!openOption)}>{`${options.checkin} kg check-in , ${options.cabin} kg cabin  `}</span>
@@ -128,8 +136,9 @@ const AddNew = () => {
             
             
             <div className="item" style={{width : "100%"}}> 
+            {err && <div style={{display:'flex',justifyContent:'center',marginTop:'15px'}}> <span> All Fields required</span></div>}
               <button className="addButton" onClick={handleclick}>Add</button>
-              {err && "All Fields required"}
+              
             </div>
           </div>
         </div>

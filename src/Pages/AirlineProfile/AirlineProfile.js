@@ -5,12 +5,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { AuthContext } from "../../context/AuthContext.js";
 import axios from 'axios'
+import Loader from "../../Components/Loader/Loader";
 
 const AirlineProfile = () => {
   
   const {user} = useContext(AuthContext)
   const [editable, setEditable] = useState(false);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [photoURL, setPhotoURL] = useState(
     user.img
   );
@@ -25,10 +27,12 @@ const AirlineProfile = () => {
   const [credentials, setCredentials] = useState({});
 
     const handleChange1 = (e) => {
+      
       setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
       };
   const handleclick = async (e) => {
     e.preventDefault()
+    setLoading(true)
     const data = new FormData()
     data.append("file",file)
     data.append("upload_preset","upload")
@@ -50,7 +54,9 @@ const AirlineProfile = () => {
       
       const newData = await axios.get(`/airlines/find/${user._id}`)
       localStorage.setItem("airline", JSON.stringify(newData.data));
+      setLoading(false)
     }catch(err){
+      setLoading(false)
       console.log(err)
     }
     window.location.reload();
@@ -58,6 +64,7 @@ const AirlineProfile = () => {
   };
   return (
     <div className="pContainer">
+      {loading && <Loader/> }
       <div className="top">
         <h1>Airline Profile</h1>
         <button

@@ -3,6 +3,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import { useContext, useState } from 'react';
 import {AuthContext} from '../../context/AuthContext.js'
 import axios from 'axios';
+import Loader from '../../Components/Loader/Loader'
 
 const LoginRegistration = () => {
 	
@@ -16,6 +17,7 @@ const LoginRegistration = () => {
 		username: undefined,
 	  });
 	  
+	  const [load,setLoading]= useState(false)
 	  const { loading, error, dispatch } = useContext(AuthContext);
 	
 	  const navigate = useNavigate();
@@ -45,13 +47,16 @@ const LoginRegistration = () => {
 	  
   const [error1,setError1] = useState(null);
 	  const handleClick1 = async (e) => {
+		setLoading(true)
 		e.preventDefault();
 		try {
 		  await axios.post("/auth/airline/register", credentials1);
 		  setError1(null)
+		  setLoading(false)
 		  navigate("/checkEmail")
 		  
 		} catch (err) {
+			setLoading(false)
 			setError1(err.response.data.message)
 			console.log(error1)
 		}
@@ -59,6 +64,7 @@ const LoginRegistration = () => {
 	
   return (
     <div className="container">
+	{(loading || load) &&<Loader/>}
     <div className="main">  	
 		<input type="checkbox" id="chk" aria-hidden="true"/>
 
@@ -69,7 +75,7 @@ const LoginRegistration = () => {
 					<input type="email" id="email" placeholder="Email"onChange={handleChange1}/>
 					<input type="password" id="password" placeholder="Password"onChange={handleChange1}/>
 					<button disabled={loading} onClick={handleClick1}>Sign up</button>
-					{error1 && <span>{error1}</span>}
+					{error1 && <div style={{display:'flex',justifyContent:'center'}}><span>{error1}</span></div>}
 				</form>
 			</div>
 
@@ -78,8 +84,9 @@ const LoginRegistration = () => {
 					<label htmlFor="chk" aria-hidden="true">Login</label>
 					<input type="email" id="email" placeholder="Email" onChange={handleChange}/>
 					<input type="password" id="password" placeholder="Password"onChange={handleChange}/>
+					{error && <div style={{display:'flex',justifyContent:'center'}}><span>{error.message}</span></div>}
 					<button disabled={loading} onClick={handleClick}>Login</button>
-					{error && <span>{error.message}</span>}
+					
           <div className='ForgotPassword'>
         <a href="/ForgotPassword">Forgot your password?</a>
         </div>

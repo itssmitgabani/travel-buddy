@@ -6,6 +6,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { flightsColumns, flightsRows } from '../../dataTableSrc'
 import { AuthContext } from '../../context/AuthContext'
 import useFetch from '../../hooks/useFetch'
+import Loader from '../../Components/Loader/Loader'
 
 const Rooms = () => {
   const ActionColumn = [
@@ -21,9 +22,10 @@ const Rooms = () => {
         }
     },]
     const {user} = useContext(AuthContext)
-    const {data} = useFetch(`/flight/${user._id}`)
+    const {data ,loading} = useFetch(`/flight/${user._id}`)
   return (
     <div className="roomContainer">
+      {loading && <Loader/>}
       <h1>Flights:</h1>
       <div style={{ height: 400, width: '100%' }}>
                 <DataGrid

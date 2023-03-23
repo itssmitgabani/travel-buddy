@@ -1,17 +1,19 @@
 import axios from 'axios';
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
+import Loader from '../../Components/Loader/Loader';
 import useFetch from '../../hooks/useFetch';
 import './ViewBooking.scss'
 
 const ViewBooking = () => {
 
     let { id } = useParams();
-    
-const {data} = useFetch(`/airlines/getBookingDetails/${id}`);
+const {data , loading} = useFetch(`/airlines/getBookingDetails/${id}`);
 const handleclick = async () =>{
+  
     try{
         await axios.put(`/bookAirline/verify/${id}`);
+        
         window.location.reload(true);
         
     }catch(err){
@@ -20,6 +22,7 @@ const handleclick = async () =>{
 }
   return (
     <div className='viewBookingContainer'>
+      {loading  && <Loader/>}
       <h1>Booking Details:</h1>
       <div className="container1">
         <div className="label">
@@ -39,11 +42,12 @@ const handleclick = async () =>{
             <span className="v">{data.seats}</span>
             <span className="v">{data.totalAmt}</span>
             <span className="v">{data.discountAmt}</span>
-            <span className="v">{data.bookingdate? data.bookingdate.split("T")[0] :data.bookingdate}</span>
+            <span className="v">{data.createdAt? data.createdAt.split("T")[0] :data.createdAt}</span>
             <span className="v">{data.verified? "Verified": "Not Verified"}</span>
         </div>
       </div>
-      {!data.verified && <button onClick={handleclick}>Verify</button>}
+      {!data.verified && <button style={{ 
+                    background: "linear-gradient(to right, #1845ad, #23a2f6 )"}}onClick={handleclick}>Verify</button>}
     </div>
   )
 }

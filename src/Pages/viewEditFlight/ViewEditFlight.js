@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import useFetch from "../../hooks/useFetch";
 import { useParams } from "react-router-dom";
+import Loader from '../../Components/Loader/Loader'
 
 const ViewEditRoom = () => {
     const [editable,setEditable] = useState(false);
@@ -24,12 +25,13 @@ const ViewEditRoom = () => {
     };
 
     const r_id = useParams()
-    const {data} = useFetch(`/flight/find/${r_id.id}`)
+    const {data,loading} = useFetch(`/flight/find/${r_id.id}`)
 
     let d = data.arrival
 
   return (
     <div className="viewRoomContainer">
+      {loading && <Loader/>}
       <h1>Flight Detail:</h1>
       
       <div className="addRoomWrapper">
@@ -66,6 +68,10 @@ const ViewEditRoom = () => {
             <div className="item">
               <label htmlFor="">Capacity: </label>
               <input type="number" min={0} placeholder={data.seats} disabled={!editable}/>
+            </div>
+            <div className="item">
+              <label htmlFor="">Available Seats: </label>
+              <input type="number" min={0} placeholder={data.availableSeats} disabled={!editable}/>
             </div>
             <div className="item">
               <label htmlFor="">Rate : </label>

@@ -75,6 +75,7 @@ const AreaCharts = () => {
 
 const {user} = useContext(AuthContext)
 const {data} = useFetch(`/bookAirline/chart/${user._id}`)
+console.log(data)
     data.map((item)=>(
         item.mon = monthNames[item._id.month]
     ))

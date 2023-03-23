@@ -25,13 +25,13 @@ export const bookingColumns = [
       width: 150,
     },
     {
-      field:'bookingdate',
+      field:'createdAt',
       headerName: 'Booking Date',
       width: 150,
       renderCell: (params) => {
         return (
           <div >
-          {params.row.bookingdate.split("T")[0]}
+          {params.row.createdAt.split("T")[0]}
           </div>
         );
       },
@@ -105,6 +105,14 @@ export const bookingColumns = [
       field: "username",
       headerName: "User name",
       width: 140,
+      renderCell: (params) => {
+        return (
+          <div className="cellWithImg">
+            <img className="cellImg" src={params.row.img} alt="avatar" />
+            {params.row.username}
+          </div>
+        );
+      },
     },
     { field: "feedback", headerName: "feedback", width: 1000,
       renderCell : (params) => (
