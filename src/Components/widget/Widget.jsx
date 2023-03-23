@@ -26,11 +26,11 @@ const Widget = ({ type  }) => {
             break
 
         case "hotelBookings":
-            url = "/bookHotel/count";
+            url = "/bookHotel/count/all";
             break
 
         case "flightBookings":
-            url = "/bookAirline/count"
+            url = "/bookAirline/count/all"
             break
         
         case "revenue":
@@ -109,10 +109,10 @@ const Widget = ({ type  }) => {
             break;
             case "income":
             da={
-                title:"Income (20% Commision - discount)",
+                title:"Income (10% Commision - discount)",
                 icon:<CurrencyRupeeOutlinedIcon className='icon' style={{color:"magenta" , backgroundColor: "rgba(255,0,255,0.2)",}}/>,
                 isStats:true,
-                count:data.income 
+                count: Math.round(data.income) 
             };
             break;
         default:

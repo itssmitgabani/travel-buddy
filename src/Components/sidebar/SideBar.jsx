@@ -65,6 +65,12 @@ const SideBar = () => {
             <span>Bookings</span>
           </li>
           </Link>
+          <Link to="/payment/hotel" className='Link'> 
+          <li className={location.pathname.includes('/payment') ? 'activeSide' : null}>
+            <BookingIcon className='icon'/>
+            <span>Payment</span>
+          </li>
+          </Link>
             <Link to="/coupon" className='Link'> 
           <li className={location.pathname==='/coupon' ? 'activeSide' : null}>
             <RiCoupon3Fill className='icon'/>

@@ -14,9 +14,12 @@ import FlightBooking from "./Pages/flightBooking/FlightBooking";
 import SideBar from "./Components/sidebar/SideBar";
 import NavBar from "./Components/navbar/NavBar";
 import AdminProfile from "./Pages/adminProfile/AdminProfile";
+import ResetPassword from "./Pages/resetpassword/resetPassword";
 import View from "./Pages/view/View";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import HotelPayment from "./Pages/HotelPayment/HotelPayment";
+import AirlinePayment from "./Pages/AirlinePayment/AirlinePayment";
 
 function App() {
   const location = useLocation();
@@ -32,10 +35,10 @@ function App() {
   return (
     
     <div className='dashboard'>
-        {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword") && <SideBar/>}
+        {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword"&& location.pathname !== "/passwordReset") && <SideBar/>}
       
       <div className="homeContainer">
-      {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword") && <NavBar/>}
+      {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword"&& location.pathname !== "/passwordReset") && <NavBar/>}
         <Routes>
         <Route path="/">
         <Route path="login" element={<Login />} />
@@ -67,8 +70,13 @@ function App() {
             <Route path="hotel" element={<ProtectedRoute><HotelBooking /></ProtectedRoute>} />
             <Route path="flight" element={<ProtectedRoute><FlightBooking /></ProtectedRoute>} />
           </Route>
+          <Route path="payment" >
+            <Route path="hotel" element={<ProtectedRoute><HotelPayment /></ProtectedRoute>} />
+            <Route path="airline" element={<ProtectedRoute><AirlinePayment /></ProtectedRoute>} />
+          </Route>
           <Route path="feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
-          <Route path="forgotPassword" element={<ProtectedRoute><ForgotPassword /></ProtectedRoute>} />
+          <Route path="forgotPassword" element={<ForgotPassword />} />
+          <Route path="passwordReset" element={<ResetPassword />} />
           <Route path="*" element={<ProtectedRoute><NoPage /></ProtectedRoute>} />
         </Route>
       </Routes>

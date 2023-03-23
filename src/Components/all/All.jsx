@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch.js"
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Loader from '../Loader/Loader'
 
 
 const All = ({ type }) => {
@@ -129,7 +130,7 @@ const All = ({ type }) => {
             break
 
         case "feedback":
-            url = "/feedback"
+            url = "/feedback/admin"
             c = feedbackColumns;
             break
         default:
@@ -139,12 +140,12 @@ const All = ({ type }) => {
     
     return (
         <div className='all'>
+            {loading && <Loader/>}
             <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
                     rows={data}
                     columns={c}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
+                    pageSize={[5]}
                     disableSelectionOnClick
                     disableColumnMenu	
                     getRowId={row=>row._id}

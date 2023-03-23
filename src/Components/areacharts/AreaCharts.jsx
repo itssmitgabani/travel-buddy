@@ -68,7 +68,7 @@ switch (type) {
         break
 
     case "Airline":
-        url = "/bookAirline/total"
+        url = "/bookAirline/total/admin"
         break
     default:
 }

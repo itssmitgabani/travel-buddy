@@ -268,6 +268,14 @@ export const hotelRows = [
       field: "username",
       headerName: "Customer name",
       width: 270,
+      renderCell: (params) => {
+        return (
+          <div className="cellWithImg">
+            <img className="cellImg" src={params.row.img} alt="avatar" />
+            {params.row.username}
+          </div>
+        );
+    }
     },
     { field: "rooms", headerName: "Total Rooms", width: 120 },
     { field: "children", headerName: "Total Children", width: 120 },
@@ -361,10 +369,18 @@ export const hotelRows = [
   export const flightBookingColumns = [
     { field: "_id", headerName: "ID", width: 80 },
     {
-      field: "custname",
+      field: "username",
       headerName: "Customer name",
       width: 270,
-    },
+      renderCell: (params) => {
+        return (
+          <div className="cellWithImg">
+            <img className="cellImg" src={params.row.img} alt="avatar" />
+            {params.row.username}
+          </div>
+        );
+    }
+  },
     { field: "seats", headerName: "Total Seats", width: 150 },
     {
         field: 'totalAmt',
@@ -455,6 +471,13 @@ export const hotelRows = [
         field: 'createdAt',
         headerName: 'Create At',
         width: 150,
+        renderCell: (params) => {
+          return (
+            <div className="cellWithImg">
+              {params.row.createdAt.split("T")[0]}
+            </div>
+          );
+      }
       },
     {
       field: "expireat",
@@ -522,7 +545,15 @@ export const hotelRows = [
     {
       field: "username",
       headerName: "User name",
-      width: 140,
+      width: 160,
+      renderCell: (params) => {
+        return (
+          <div className="cellWithImg">
+            <img className="cellImg" src={params.row.img} alt="avatar" />
+            {params.row.username}
+          </div>
+        );
+    }
     },
     { field: "feedback", headerName: "feedback", width: 1000,
       renderCell : (params) => (

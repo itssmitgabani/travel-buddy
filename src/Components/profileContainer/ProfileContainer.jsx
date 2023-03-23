@@ -5,11 +5,14 @@ import { Link, useActionData, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import './ProfileContainer.scss'
 import axios from 'axios';
+import Loader from '../Loader/Loader'
+
 const ProfileContainer = () => {
 
   const navigate = useNavigate();
-  const {data,loading,dispatch } = useContext(AuthContext);
+  const {dispatch } = useContext(AuthContext);
   const [error,setError] = useState(null);
+  const [loading,setLoading] = useState(false);
   const {user} = useContext(AuthContext)
   const [name,setName] = useState(null);
   const [openEditProfile, setOpenEditProfile] = useState(false);
@@ -35,6 +38,7 @@ const ProfileContainer = () => {
   };
 
   const handleUpdateNameAndImg = async e => {
+    setLoading(true)
     e.preventDefault()
     const data = new FormData()
     data.append("file",file)
@@ -49,23 +53,26 @@ let url
       }
       const updatedData = {
         username:name? name: user.username,
-        img:file !== null ? url : user.img,
+        img: (file !== null ? url.url : user.img),
       }
 
-      console.log(updatedData)
 
       await axios.put(`/admin/updateNameAndImg/${user._id}`,updatedData)
-
+      
       const newData = await axios.get(`/admin/${user._id}`)
       localStorage.setItem("admin", JSON.stringify(newData.data.details));
+      setLoading(false)
+      handleCloseEditProfile()
+    window.location.reload();
     }catch(err){
+      setLoading(false)
       console.log(err)
     }
-    handleCloseEditProfile()
-    window.location.reload();
+    
   };
 
   const handleUpdatePassword = async e => {
+    setLoading(true)
     e.preventDefault()
     try{
 
@@ -77,12 +84,14 @@ let url
 
 
       await axios.put(`/admin/updatePassword/${user._id}`,passwords)
+      setLoading(false)
       setError(null)
       alert("you need to re-login")
       
     dispatch({ type: "LOGOUT" });
     navigate("/login");
     }catch(err){
+      setLoading(false)
       setError(err.response.data.message)
     }
     handleCloseEditProfile()
@@ -105,6 +114,7 @@ let url
 
   return (
     <div className='profileContainer'>
+      {loading && <Loader/>}
       <div className="top">
             <h1>profile</h1>
         </div>
@@ -139,7 +149,7 @@ let url
           <label htmlFor='file' style={{'cursor':'pointer'}}>
           <input type="file" name="file" id="file" accept="image/*"style={{'width':'200px','display':'none'}} onChange={handleChange}/>
           
-          <img src={photoURL} alt="avatar" style={{'height':'100px','width':'100px','borderRadius':'50%','overflow':'hidden'}}/>
+          <img src={photoURL} alt="avatar" style={{'height':'100px','width':'100px','borderRadius':'50%','overflow':'hidden',border:'1px solid'}}/>
           </label>
           </div>
           <TextField
@@ -193,7 +203,7 @@ let url
             variant="standard"
             type="password"
           />
-          {error && <span>{error}</span>}
+          {error && <span style={{marginTop:'15px'}}>{error}</span>}
           </div>
       </DialogContent>
       <DialogActions style={{'display':'flex','justifyContent':'center','flexDirection':'column','alignItems':'center'}}>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext.js";
 import axios from 'axios';
 import './Container.scss'
+import Loader from '../Loader/Loader.jsx';
 const Container = () => {
 
   const [credentials, setCredentials] = useState({
@@ -33,8 +34,11 @@ const Container = () => {
   };
 
 
-  return (
+  return (<>
+    {loading&&<Loader/>}
     <form action='/' className='loginForm'>
+      
+      
         <h3>Login Here</h3>
 
         <label for="email">Email</label>
@@ -42,13 +46,14 @@ const Container = () => {
 
         <label for="password">Password</label>
         <input type="password" placeholder="Password" id="password" onChange={handleChange}/>
+        {error && <div style={{alignItems:'center',display:'flex',justifyContent:'center',marginTop:'15px'}}><span>{error.message}</span></div>}
 
         <button disabled={loading} onClick={handleClick} >Log In</button>
-        {error && <span>{error.message}</span>}
-        <div className='ForgotPassword'>
+        <div className='ForgotPassword'>  
         <a href="/ForgotPassword">Forgot your password?</a>
         </div>
     </form>
+    </>
   )
 }
 

@@ -1,0 +1,38 @@
+.airPay{
+    
+    margin: 25px 20px;
+    padding: 10px;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    
+    .singlePay{
+        display: flex;
+        flex-direction: column;
+        margin: 25px 20px;
+    padding: 10px;
+    box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    width: 40%;
+    }
+    .btnApp{
+        height: 40px;
+        width: 60%;
+        align-self: center;
+        margin-top: 10px;
+        border-radius: 15px;
+        color: green;
+        background-color: greenyellow;
+        cursor: pointer;
+    }
+}
+.paymentHead{
+    
+    color: gray;
+    margin: 0px 20px;
+    padding: 10px;
+}
