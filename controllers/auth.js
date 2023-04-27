@@ -81,6 +81,7 @@ export const adminPassword = async (req, res, next) => {
 };
 
 export const adminResetPassword = async (req, res, next) => {
+  const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
   try {
     
     const admin = await Admin.findOne({ _id: req.body.id });
@@ -91,7 +92,12 @@ export const adminResetPassword = async (req, res, next) => {
       token: req.body.token,
     });
     if (!token) return next(createError(400, "invalid link!"));
-
+    if(req.body.password.length < 8){
+      return next(createError(401, "Password length must greater than 8 char!"));
+    }
+    if(!regex.test(req.body.password)){
+      return next(createError(401, "Password must contain one letter and one number!"));
+    }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
@@ -102,7 +108,7 @@ export const adminResetPassword = async (req, res, next) => {
       { new: true }
     );
 
-    await sendEmail(admin.email, "Verify Email", "password changed successfully!");
+    await sendEmail(admin.email, "Success", "password changed successfully!");
 
     await token.deleteOne();
     res.status(200).send("password changed successfully!");
@@ -115,10 +121,19 @@ export const adminResetPassword = async (req, res, next) => {
 
 
 export const airlineregister = async (req, res, next) => {
+  const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
   try {
-
-    if(!req.body.email && !req.body.email){
+    if(!validator.isEmail(req.body.email)){
+      return next(createError(401, "enter valid email!"));
+    }
+    if(!req.body.email || !req.body.password || !req.body.username){
       return next(createError(401, "All Fields Required!"));
+    }
+    if(req.body.password.length < 8){
+      return next(createError(401, "Password length must greater than 8 char!"));
+    }
+    if(!req.body.password.match(regex)){
+      return next(createError(401, "Password must contain one letter and one number!"));
     }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
@@ -227,6 +242,7 @@ export const airlinePassword = async (req, res, next) => {
 };
 
 export const airlineResetPassword = async (req, res, next) => {
+  const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
   try {
     
     const airline = await Airline.findOne({ _id: req.body.id });
@@ -237,18 +253,23 @@ export const airlineResetPassword = async (req, res, next) => {
       token: req.body.token,
     });
     if (!token) return next(createError(400, "invalid link!"));
-
+    if(req.body.password.length < 8){
+      return next(createError(401, "Password length must greater than 8 char!"));
+    }
+    if(!regex.test(req.body.password)){
+      return next(createError(401, "Password must contain one letter and one number!"));
+    }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
     
-    await User.updateOne(
+    await Airline.updateOne(
       { _id: airline._id },
       { $set: { password: hash } },
       { new: true }
     );
 
-    await sendEmail(airline.email, "Verify Email", "password changed successfully!");
+    await sendEmail(airline.email, "Success", "password changed successfully!");
 
     await token.deleteOne();
     res.status(200).send("password changed successfully!");
@@ -259,11 +280,21 @@ export const airlineResetPassword = async (req, res, next) => {
 };
 
 export const hotelregister = async (req, res, next) => {
+  const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
   try {
+    if(!req.body.email || !req.body.password || !req.body.username){
+      return next(createError(401, "All Fields Required!"));
+    }
     if(!validator.isEmail(req.body.email)){
       return next(createError(401, "enter valid email!"));
     }
     
+    if(req.body.password.length < 8){
+      return next(createError(401, "Password length must greater than 8 char!"));
+    }
+    if(!req.body.password.match(regex)){
+      return next(createError(401, "Password must contain one letter and one number!"));
+    }
     const hotel = await Hotel.findOne({ email: req.body.email });
     if (hotel) return next(createError(404, "email already exist!"));
 
@@ -377,6 +408,7 @@ export const hotelPassword = async (req, res, next) => {
 };
 
 export const hotelResetPassword = async (req, res, next) => {
+  const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
   try {
     
     const hotel = await Hotel.findOne({ _id: req.body.id });
@@ -387,18 +419,23 @@ export const hotelResetPassword = async (req, res, next) => {
       token: req.body.token,
     });
     if (!token) return next(createError(400, "invalid link!"));
-
+    if(req.body.password.length < 8){
+      return next(createError(401, "Password length must greater than 8 char!"));
+    }
+    if(!regex.test(req.body.password)){
+      return next(createError(401, "Password must contain one letter and one number!"));
+    }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
     
-    await User.updateOne(
+    await Hotel.updateOne(
       { _id: hotel._id },
       { $set: { password: hash } },
       { new: true }
     );
 
-    await sendEmail(hotel.email, "Verify Email", "password changed successfully!");
+    await sendEmail(hotel.email, "Success", "password changed successfully!");
 
     await token.deleteOne();
     res.status(200).send("password changed successfully!");
@@ -410,7 +447,11 @@ export const hotelResetPassword = async (req, res, next) => {
 
 export const userregister = async (req, res, next) => {
   const regex = new RegExp("(0|91)?[6-9][0-9]{9}");
+  const regex1 = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
   try {
+    if(!req.body.email || !req.body.password || !req.body.username || !req.body.mobileno){
+      return next(createError(401, "All Fields Required!"));
+    }
     if(!validator.isEmail(req.body.email)){
       return next(createError(401, "enter valid email!"));
     }
@@ -420,6 +461,12 @@ export const userregister = async (req, res, next) => {
   }
 
   
+  if(req.body.password.length < 8){
+    return next(createError(401, "Password length must greater than 8 char!"));
+  }
+  if(!req.body.password.match(regex1)){
+    return next(createError(401, "Password must contain one letter and one number!"));
+  }
   const user = await User.findOne({ email: req.body.email });
   if (user) return next(createError(404, "email already exist!"));
 
@@ -490,7 +537,7 @@ export const userLogin = async (req, res, next) => {
         return next(createError(400, "please check your email and verify your account"));
       }
       if(!user.status){
-        return next(createError(400, "Aorry your account is De-Activated pleae contact admin!"));
+        return next(createError(400, "Sorry your account is De-Activated pleae contact admin!"));
       }
     const token = jwt.sign(
       { id: user._id},
@@ -529,6 +576,7 @@ export const userPassword = async (req, res, next) => {
 };
 
 export const userResetPassword = async (req, res, next) => {
+  const regex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/
   try {
     
     const user = await User.findOne({ _id: req.body.id });
@@ -539,7 +587,12 @@ export const userResetPassword = async (req, res, next) => {
       token: req.body.token,
     });
     if (!token) return next(createError(400, "invalid link!"));
-
+    if(req.body.password.length < 8){
+      return next(createError(401, "Password length must greater than 8 char!"));
+    }
+    if(!regex.test(req.body.password)){
+      return next(createError(401, "Password must contain one letter and one number!"));
+    }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
@@ -550,7 +603,7 @@ export const userResetPassword = async (req, res, next) => {
       { new: true }
     );
 
-    await sendEmail(user.email, "Verify Email", "password changed successfully!");
+    await sendEmail(user.email, "Success", "password changed successfully!");
 
     await token.deleteOne();
     res.status(200).send("password changed successfully!");
