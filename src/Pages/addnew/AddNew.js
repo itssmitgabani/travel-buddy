@@ -71,9 +71,9 @@ const navigate = useNavigate()
         roomnumbers:roomNumbers,
         h_id:user._id
       };
-      await axios.post('/room/add',newhotel)
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/room/add`,newhotel)
       
-      const newData = await axios.get(`/hotels/find/${user._id}`)
+      const newData = await axios.get(`${process.env.REACT_APP_BASE_URL}/hotels/find/${user._id}`)
       localStorage.setItem("hotel", JSON.stringify(newData.data));
       setErr(false)
       setLoading(false)

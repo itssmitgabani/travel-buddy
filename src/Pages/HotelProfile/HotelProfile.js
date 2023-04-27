@@ -46,13 +46,13 @@ const HotelProfile = () => {
         img:url,
       }
       
-      await axios.put(`/hotels/updateImg/${user._id}`,updatedData)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/hotels/updateImg/${user._id}`,updatedData)
 
       }
-      await axios.put(`/hotels/update/${user._id}`,credentials)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/hotels/update/${user._id}`,credentials)
 
       
-      const newData = await axios.get(`/hotels/find/${user._id}`)
+      const newData = await axios.get(`${process.env.REACT_APP_BASE_URL}/hotels/find/${user._id}`)
       localStorage.setItem("hotel", JSON.stringify(newData.data));
       setLoading(false)
     }catch(err){

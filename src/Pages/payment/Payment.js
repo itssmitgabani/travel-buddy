@@ -39,7 +39,7 @@ const Payment = () => {
         name:document.getElementById("name").value,
       }
       setError(null)
-      await axios.post(`/bank/hotel/add`,info)
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/bank/hotel/add`,info)
       setLoading(false)
       
       handleCloseChangePassword()
@@ -56,7 +56,7 @@ const Payment = () => {
   const handleClick = async () =>{
     setLoading(true)
     try{
-      axios.put(`/payment/hotel/request/${da && data[0]._id}`)
+      axios.put(`${process.env.REACT_APP_BASE_URL}/payment/hotel/request/${da && data[0]._id}`)
       setLoading(false)
       window.location.reload()
     }
@@ -75,11 +75,11 @@ const Payment = () => {
       <div style={{display:'flex',marginTop:'15px',gap:'20px',alignItems:'center'}}>
         <div className='PaymentC'>
             <h4>Total <br /> Paid Amount:</h4>
-            <h1 className='count'>{da && data[0].totalPaidAmt}</h1>
+            <h1 className='count'>{da && Math.round(data[0].totalPaidAmt)}</h1>
         </div>
         <div className='PaymentC'>
         <h4>Total <br />Outstanding Amount:</h4>
-        <h1 className='count'>{da && data[0].totalOutstandingAmt}</h1>
+        <h1 className='count'>{da && Math.round(data[0].totalOutstandingAmt)}</h1>
         </div>
         <div className='' style={{flex:1}}>
             <button className={(da && data[0].requested) || data1.length ===0 || da && data[0].totalOutstandingAmt===0? 'payButton g dis' : 'payButton g'} onClick={handleClick} >Request Payment</button>

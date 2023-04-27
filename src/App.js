@@ -19,11 +19,28 @@ import ResetPassword from './Pages/ResetPassword/ResetPassword';
 import Rooms from './Pages/Rooms/Rooms';
 import ViewBooking from './Pages/ViewBooking/ViewBooking';
 import ViewEditRoom from './Pages/viewEditRoom/ViewEditRoom';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import * as React from 'react';
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function App() {
   
   const location = useLocation();
   const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    
+
+    setOpen(false);
+  };
   const ProtectedRoute = ({children}) => {
     const {user} = useContext(AuthContext)
     if(!user){
@@ -37,7 +54,7 @@ function App() {
     const {user} = useContext(AuthContext)
     if(user && (user.address === " " ||user.checkin === "" ||user.checkout === "" || user.city === " " ||user.description === " " ||user.hotelname === " " ||user.locationlink === " " || user.username === " ")){
       navigate("/profile");
-      alert("complete hotel profile")
+      handleClick()
     }
     
     return children
@@ -47,6 +64,11 @@ function App() {
         {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword"&& location.pathname !== "/passwordReset" && location.pathname !== "/checkEmail" )&& <SideBar/>}
       <div className="homeContainer">
       {(location.pathname !== "/login" && location.pathname !== "/ForgotPassword"&& location.pathname !== "/passwordReset" && location.pathname !== "/checkEmail")&& <NavBar/>}
+      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+          Complete Hotel Profile!
+        </Alert>
+      </Snackbar>
         <Routes>
         <Route path="/">
         <Route path="login" element={<LoginRegistration />} />

@@ -120,7 +120,7 @@ const ViewEditRoom = () => {
           };
         }
 
-      await axios.put(`/room/update/${r_id.id}`,newhotel)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/room/update/${r_id.id}`,newhotel)
       setLoading(false)
       window.location.reload()
       } catch (err) {console.log(err)

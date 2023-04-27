@@ -12,14 +12,14 @@ const Widget = ({ type }) => {
 
     switch(type){
         case "bookings":
-          url = `bookHotel/count/${user._id}`
+          url = `/bookHotel/count/${user._id}`
             
             break;
         case "revenue":
-          url = `bookHotel/totalRevenue/${user._id}`
+          url = `/bookHotel/totalRevenue/${user._id}`
             break;
         case "rooms":
-          url = `room/totalRoom/${user._id}`
+          url = `/room/totalRoom/${user._id}`
             break;
         default:
                 break;

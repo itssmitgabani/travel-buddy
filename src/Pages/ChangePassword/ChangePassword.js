@@ -5,14 +5,32 @@ import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import {useNavigate } from 'react-router-dom';
 import Loader from '../../Components/Loader/Loader'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
+import NewReleasesRoundedIcon from '@mui/icons-material/NewReleasesRounded';
+import * as React from 'react';
+import Slide from '@mui/material/Slide';
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const ChangePassword = () => {
 
-  
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    dispatch({ type: "LOGOUT" });
+    navigate("/login");
+    
+  };
   const [error,setError] = useState(null);
   const [loading,setLoading] = useState(false);
 
-  const navigate = useNavigate();
   const {user,dispatch } = useContext(AuthContext);
 
   const handleUpdatePassword = async e => {
@@ -27,13 +45,10 @@ const ChangePassword = () => {
       }
 
 
-      await axios.put(`/hotels/updatePassword/${user._id}`,passwords)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/hotels/updatePassword/${user._id}`,passwords)
       setError(null)
       setLoading(false)
-      alert("you need to re-login")
-      
-    dispatch({ type: "LOGOUT" });
-    navigate("/login");
+      handleClickOpen()
     }catch(err){
       setLoading(false)
       setError(err.response.data.message)
@@ -53,6 +68,24 @@ const ChangePassword = () => {
           {error && <div style={{display:'flex',justifyContent:'center',marginTop:'15px'}}><span>{error}</span></div>}
           <button onClick={handleUpdatePassword}>Save</button>
       </div>
+      <Dialog
+    style={{zIndex:1500}}
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle textAlign={'center'}><NewReleasesRoundedIcon style={{width:'80px','height':'80px',color:'crimson'}}/></DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description" style={{textAlign:'center',color:'black'}}>
+            You need to re-login!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions style={{justifyContent:'center'}} >
+          <Button onClick={handleClose}>OK</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }

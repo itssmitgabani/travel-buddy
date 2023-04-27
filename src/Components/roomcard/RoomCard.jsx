@@ -28,8 +28,8 @@ const RoomCard = ({r_id}) => {
         <span>Allowance:</span>
         <span style={{'display':'flex','flexDirection':'column','alignItems':'end'}}>
             <span>{data.maxadults} Adults </span>
-            <span>{data.maxchildren} children</span>
-            </span>
+            <span>{data.maxchildren} child</span>
+        </span>
         </div>
         </div>
         <Link to={`viewEdit/${r_id}`} className='Link'>

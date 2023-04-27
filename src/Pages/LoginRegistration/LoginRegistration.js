@@ -35,7 +35,7 @@ const LoginRegistration = () => {
 		e.preventDefault();
 		dispatch({ type: "LOGIN_START" });
 		try {
-		  const res = await axios.post("/auth/hotel/login", credentials);
+		  const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/hotel/login`, credentials);
 		  
 			dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
 			
@@ -53,7 +53,7 @@ const LoginRegistration = () => {
 		e.preventDefault();
 		setLoading(true)
 		try {
-		  await axios.post("/auth/hotel/register", credentials1);
+		  await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/hotel/register`, credentials1);
 		  setError1(null)
 		  setLoading(false)
 		  navigate("/checkEmail")
@@ -79,7 +79,7 @@ const LoginRegistration = () => {
 					<input type="email" id="email" placeholder="Email"onChange={handleChange1} required/>
 					<input type="password" id="password" placeholder="Password"onChange={handleChange1} required/>
 					<button disabled={loading} onClick={handleClick1}>Sign up</button>
-					{error1 && <div style={{display:'flex',justifyContent:'center',marginTop:'15px'}}><span>{error1}</span></div>}
+					{error1 && <div style={{display:'flex',justifyContent:'center',marginTop:'15px'}}><span style={{textAlign:'center'}}>{error1}</span></div>}
 				</form>
 			</div>
 

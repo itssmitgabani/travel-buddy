@@ -99,7 +99,7 @@ const {data} = useFetch(`/bookHotel/chart/${user._id}`)
                     <Legend verticalAlign="top"/>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="mon" />
-                    <YAxis yAxisId="left" tickFormatter={(value) => value && value.toLocaleString() + '₹'} dataKey="revenue" domain={[0, dataMax => (dataMax * 1.5)]}/>
+                    <YAxis yAxisId="left" tickFormatter={(value) => value && value.toLocaleString() + '₹'} dataKey="revenue" domain={[0, dataMax => (Math.round(dataMax * 1.5))]}/>
                     <YAxis  yAxisId="right" orientation='right' dataKey="booking" domain={[0, dataMax => (dataMax * 2)]}/>
                     <Tooltip formatter={(value) => value && value.toLocaleString() }/>
                     <Line yAxisId="left" type="monotone" dataKey="revenue" stroke="green"   />

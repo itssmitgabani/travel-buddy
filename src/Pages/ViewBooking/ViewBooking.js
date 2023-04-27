@@ -12,7 +12,7 @@ const ViewBooking = () => {
 const {data , loading} = useFetch(`/hotels/getBookingDetails/${id}`);
 const handleclick = async () =>{
     try{
-        await axios.put(`/bookHotel/verify/${id}`);
+        await axios.put(`${process.env.REACT_APP_BASE_URL}/bookHotel/verify/${id}`);
         window.location.reload(true);
         
     }catch(err){
