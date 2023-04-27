@@ -42,9 +42,9 @@ const AddNew = () => {
         a_id:user._id,
         availableSeats:info.seats
       };
-      await axios.post('/flight/add',newflight)
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/flight/add`,newflight)
       
-      const newData = await axios.get(`/airlines/find/${user._id}`)
+      const newData = await axios.get(`${process.env.REACT_APP_BASE_URL}/airlines/find/${user._id}`)
       localStorage.setItem("airline", JSON.stringify(newData.data));
       setLoading(false)
      navigate("/flights")

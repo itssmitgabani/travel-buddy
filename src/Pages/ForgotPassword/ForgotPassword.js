@@ -12,7 +12,7 @@ const [loading,setLoading] = useState(false)
     e.preventDefault()
     setLoading(true)
     try{
-      const resp = await axios.post('/auth/airline/forgotPassword',{email:email})
+      const resp = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/airline/forgotPassword`,{email:email})
       setResult(resp.data)
       setError(null)
       setLoading(false)
@@ -31,7 +31,8 @@ const [loading,setLoading] = useState(false)
 
         <label for="username">Email</label>
         <input type="text" placeholder="Enter Email" id="username" onChange={(e)=>{setEmail(e.target.value)}}/>
-        {erroe}{result}
+        
+        <div style={{display:'flex',justifyContent:'center'}}><span>{erroe}{result}</span></div>
         <button onClick={handleClick}>Send Link</button>
     </form>
     </div>

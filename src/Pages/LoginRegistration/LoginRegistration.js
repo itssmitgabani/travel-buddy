@@ -34,7 +34,7 @@ const LoginRegistration = () => {
 		e.preventDefault();
 		dispatch({ type: "LOGIN_START" });
 		try {
-		  const res = await axios.post("/auth/airline/login", credentials);
+		  const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/airline/login`, credentials);
 		  
 			dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
 			navigate("/");
@@ -50,7 +50,7 @@ const LoginRegistration = () => {
 		setLoading(true)
 		e.preventDefault();
 		try {
-		  await axios.post("/auth/airline/register", credentials1);
+		  await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/airline/register`, credentials1);
 		  setError1(null)
 		  setLoading(false)
 		  navigate("/checkEmail")
@@ -75,7 +75,7 @@ const LoginRegistration = () => {
 					<input type="email" id="email" placeholder="Email"onChange={handleChange1}/>
 					<input type="password" id="password" placeholder="Password"onChange={handleChange1}/>
 					<button disabled={loading} onClick={handleClick1}>Sign up</button>
-					{error1 && <div style={{display:'flex',justifyContent:'center'}}><span>{error1}</span></div>}
+					{error1 && <div style={{display:'flex',justifyContent:'center',}}><span style={{textAlign:'center'}}>{error1}</span></div>}
 				</form>
 			</div>
 

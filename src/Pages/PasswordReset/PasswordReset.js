@@ -15,7 +15,7 @@ const handleClick = async(e) =>{
   e.preventDefault()
   setLoading(true)
   try{
-    const resp = await axios.post('/auth/airline/resetPassword',{password:password,...params})
+    const resp = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/airline/resetPassword`,{password:password,...params})
     setResult(resp.data)
     setError(null)
     setLoading(false)
@@ -25,7 +25,6 @@ const handleClick = async(e) =>{
     setError(err.response.data.message)
     setResult(null)
     setLoading(false)
-    setTimeout(function() {window.close();}, 3000)
   }
   
 }

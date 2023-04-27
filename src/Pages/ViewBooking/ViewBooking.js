@@ -12,7 +12,7 @@ const {data , loading} = useFetch(`/airlines/getBookingDetails/${id}`);
 const handleclick = async () =>{
   
     try{
-        await axios.put(`/bookAirline/verify/${id}`);
+        await axios.put(`${process.env.REACT_APP_BASE_URL}/bookAirline/verify/${id}`);
         
         window.location.reload(true);
         

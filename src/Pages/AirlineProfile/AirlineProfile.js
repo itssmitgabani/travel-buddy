@@ -46,13 +46,13 @@ const AirlineProfile = () => {
         img:url,
       }
       
-      await axios.put(`/airlines/updateImg/${user._id}`,updatedData)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/airlines/updateImg/${user._id}`,updatedData)
 
       }
-      await axios.put(`/airlines/update/${user._id}`,credentials)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/airlines/update/${user._id}`,credentials)
 
       
-      const newData = await axios.get(`/airlines/find/${user._id}`)
+      const newData = await axios.get(`${process.env.REACT_APP_BASE_URL}/airlines/find/${user._id}`)
       localStorage.setItem("airline", JSON.stringify(newData.data));
       setLoading(false)
     }catch(err){
