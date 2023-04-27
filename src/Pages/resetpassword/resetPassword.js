@@ -19,7 +19,7 @@ const [loading,setLoading] = useState(false)
     e.preventDefault()
     try{
       setLoading(true)
-      const resp = await axios.post('/auth/admin/resetPassword',{password:password,...params})
+      const resp = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/admin/resetPassword`,{password:password,...params})
       setLoading(false)
       setResult(resp.data)
       setError(null)

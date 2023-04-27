@@ -22,6 +22,7 @@
     "apexcharts": "^3.36.3",
     "axios": "^1.3.4",
     "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
     "font-awesome": "^4.7.0",
     "ionic": "^5.4.16",
     "query-string": "^8.1.0",
@@ -58,6 +59,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://localhost:8800/api"
+  }
 }

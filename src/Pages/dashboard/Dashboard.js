@@ -8,7 +8,6 @@ import Widget from '../../Components/widget/Widget'
 import './dashboard.scss'
 
 const Dashboard = () => {
-
   return (
     < >
         <div className="widgets" >

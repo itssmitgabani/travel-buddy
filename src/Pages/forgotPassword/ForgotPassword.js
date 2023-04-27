@@ -16,7 +16,7 @@ const [loading,setLoading] = useState(false)
     e.preventDefault()
     try{
       setLoading(true)
-      const resp = await axios.post('/auth/admin/forgotPassword',{email:email})
+      const resp = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/admin/forgotPassword`,{email:email})
       setLoading(false)
       setResult(resp.data)
       setError(null)

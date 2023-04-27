@@ -10,7 +10,7 @@ const AirlinePayment = () => {
   const {data , loading} = useFatch('/payment/airline/all/payment')
   const handleClick = async (e) =>{
     try{
-      await axios.put(`/payment/airline/approve/${e.target.id}`)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/payment/airline/approve/${e.target.id}`)
       window.location.reload()
     }
     catch(err){
@@ -32,7 +32,7 @@ const AirlinePayment = () => {
             <div className='singlePay'>
               <span> airline Id: {item.a_id}</span>
               <span> airline name : {item.airline.airlinename}</span>
-              <span> payable Amount : {item.totalOutstandingAmt}</span>
+              <span> payable Amount : {Math.round(item.totalOutstandingAmt)}</span>
               <button id={item._id} className='btnApp' onClick={handleClick}>Approve Payment</button>
             </div>
           ))}

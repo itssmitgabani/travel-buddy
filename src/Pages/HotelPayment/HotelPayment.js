@@ -12,7 +12,7 @@ const HotelPayment = () => {
 
   const handleClick = async (e) =>{
     try{
-      await axios.put(`/payment/hotel/approve/${e.target.id}`)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/payment/hotel/approve/${e.target.id}`)
       window.location.reload()
     }
     catch(err){
@@ -34,7 +34,7 @@ const HotelPayment = () => {
             <div className='singlePay'>
               <span> hotel Id: {item.h_id}</span>
               <span> hotel name : {item.hotel.hotelname}</span>
-              <span> payable Amount : {item.totalOutstandingAmt}</span>
+              <span> payable Amount : {Math.round(item.totalOutstandingAmt)}</span>
               <span> Request Date : {item.updatedAt.split("T")[0]}</span>
               <button id={item._id} className='btnApp' onClick={handleClick}>Approve Payment</button>
             </div>

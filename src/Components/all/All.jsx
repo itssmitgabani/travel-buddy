@@ -14,7 +14,7 @@ const All = ({ type }) => {
     const path = location.pathname.split("/")[1];
     const handleActivate = async (id) =>{
         try{
-            await axios.put(`/${path}/Activate/${id}`);
+            await axios.put(`${process.env.REACT_APP_BASE_URL}/${path}/Activate/${id}`);
             window.location.reload(true);
             
         }catch(err){
@@ -23,7 +23,7 @@ const All = ({ type }) => {
     }
     const handleDeActivate = async (id) =>{
         try{
-            await axios.put(`/${path}/DeActivate/${id}`);
+            await axios.put(`${process.env.REACT_APP_BASE_URL}/${path}/DeActivate/${id}`);
             url = "/hotel/Activated"
             window.location.reload(true);
         }catch(err){

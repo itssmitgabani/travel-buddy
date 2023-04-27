@@ -6,10 +6,29 @@ import { AuthContext } from '../../context/AuthContext';
 import './ProfileContainer.scss'
 import axios from 'axios';
 import Loader from '../Loader/Loader'
+import Slide from '@mui/material/Slide';
+import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
+import NewReleasesRoundedIcon from '@mui/icons-material/NewReleasesRounded';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const ProfileContainer = () => {
 
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    dispatch({ type: "LOGOUT" });
+    navigate("/login");
+    
+  };
   const {dispatch } = useContext(AuthContext);
   const [error,setError] = useState(null);
   const [loading,setLoading] = useState(false);
@@ -57,9 +76,9 @@ let url
       }
 
 
-      await axios.put(`/admin/updateNameAndImg/${user._id}`,updatedData)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/admin/updateNameAndImg/${user._id}`,updatedData)
       
-      const newData = await axios.get(`/admin/${user._id}`)
+      const newData = await axios.get(`${process.env.REACT_APP_BASE_URL}/admin/${user._id}`)
       localStorage.setItem("admin", JSON.stringify(newData.data.details));
       setLoading(false)
       handleCloseEditProfile()
@@ -83,18 +102,17 @@ let url
       }
 
 
-      await axios.put(`/admin/updatePassword/${user._id}`,passwords)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/admin/updatePassword/${user._id}`,passwords)
       setLoading(false)
       setError(null)
-      alert("you need to re-login")
+      handleCloseEditProfile()
+      handleClickOpen()
       
-    dispatch({ type: "LOGOUT" });
-    navigate("/login");
     }catch(err){
       setLoading(false)
       setError(err.response.data.message)
     }
-    handleCloseEditProfile()
+    
   };
 
   const handleChange = (e)=>{
@@ -211,6 +229,25 @@ let url
         </DialogActions>
         
     </Dialog>
+
+    <Dialog
+    style={{zIndex:1500}}
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle textAlign={'center'}><NewReleasesRoundedIcon style={{width:'80px','height':'80px',color:'crimson'}}/></DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description" style={{textAlign:'center',color:'black'}}>
+            You need to re-login!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions style={{justifyContent:'center'}} >
+          <Button onClick={handleClose}>OK</Button>
+        </DialogActions>
+      </Dialog>
 </div>
         </div>
   )

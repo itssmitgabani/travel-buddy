@@ -24,7 +24,7 @@ const CouponContainer = () => {
     e.preventDefault();
     try {
       setLoading(true)
-      await axios.post("/coupon/create", credentials);
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/coupon/create`, credentials);
       setLoading(false)
       setError(null)
       
