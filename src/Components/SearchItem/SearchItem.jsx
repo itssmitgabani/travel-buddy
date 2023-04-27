@@ -18,12 +18,12 @@ const SearchItem = ({item , dates}) => {
       <div className="siDesc">
         <h1 className="siTitle">{item.hotelname}</h1>
         <span className="siDistance">{item.address}</span>
-        <span className="siTaxiOp">{item.category}</span>
+        <span className="siTaxiOp">Room Type: {item.category}</span>
         
-        <div style={{display:'flex'}}>
+        <div style={{display:'flex',flexWrap:'wrap',gap:'2px 20px'}}>
         {item.amenities.map((item)=>(
-          <span className="siSubtitle">
-          {item}&emsp;
+          <span className="siTaxiOp1">
+          &nbsp;{item}&nbsp;
         </span>
         ))}
         </div>

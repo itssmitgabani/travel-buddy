@@ -5,7 +5,7 @@ import useFetch from '../../hooks/useFetch'
 
 const HomePage = () => {
 
-    const {data} = useFetch('feedback/admin')
+    const {data} = useFetch('/feedback/admin')
     const da = data.length
   return (
     <div className='HomePageContainer'>

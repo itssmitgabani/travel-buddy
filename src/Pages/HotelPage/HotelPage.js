@@ -7,8 +7,18 @@ import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { addDays, format } from 'date-fns';
 import { Link, useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const HotelPage = () => {
+  const countries = [
+    { code: 'AD', label: 'Andorra', phone: '376' },
+    {
+      code: 'AE',
+      label: 'United Arab Emirates',
+      phone: '971',
+    },]
   const [openDate,setOpenDate] = useState(false);
   const [destination, setDestination] = useState("");
   const [error, setError] = useState(false);
@@ -38,6 +48,9 @@ const HotelPage = () => {
         <LocationOnIcon className='icon'/><input type="text" placeholder='where are you going?' onChange={(e) => setDestination(e.target.value)}/>
         
         </div>
+        
+        
+        
         {error && <span style={{color:"crimson" , paddingLeft:"90px"}}>Destination can not blank</span>}
         <div className="searchItem">
         <CalendarMonthIcon className='icon'/><span className='span' onClick={()=>setOpenDate(!openDate)}>{`${format(date[0].startDate,"MM-dd-yyyy ")} to ${format(date[0].endDate,"MM-dd-yyyy ")}`}</span>

@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/AuthContext';
 import './FlightBookDetail.scss'
 import StripeCheckout from 'react-stripe-checkout';
 import Loader from '../../Components/Loader/Loader';
+import Swal from 'sweetalert2'
 
 const FlightBookDetail = () => {
   const navigate = useNavigate()
@@ -37,7 +38,7 @@ const handlePay = async () =>{
       f_id:data._id
     }
     try{
-      await axios.post("/bookAirline/book",info)
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/bookAirline/book`,info)
     }catch(err){
   console.log(err)
     }
@@ -56,15 +57,30 @@ const onToken = async (token) =>{
     token
   }
   try{
-    await axios.post("/bookAirline/book",info)
-    await axios.put(`/flight/updateSeats/${info.f_id}`,{seats:info.seats})
-    await axios.put(`/payment/airline/add/${info.a_id}`,{amount:(info.totalAmt-=(info.totalAmt/10))})
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/bookAirline/book`,info)
+    await axios.put(`${process.env.REACT_APP_BASE_URL}/flight/updateSeats/${info.f_id}`,{seats:info.seats})
+    await axios.put(`${process.env.REACT_APP_BASE_URL}/payment/airline/add/${info.a_id}`,{amount:(info.totalAmt-=(info.totalAmt/10))})
     setLoading(false)
-    alert("done")
-    navigate("/")
+    Swal.fire(
+      'Congratulations!',
+      'Flight Booked Successfully...',
+      'success'
+    ).then(result => {
+      navigate("/bookings")
+      }
+    )
+    navigate("/bookings")
   }catch(err){
 console.log(err)
 setLoading(false)
+Swal.fire(
+  'OOps!',
+  'Something Went Wrong...',
+  'success'
+).then(result => {
+  navigate("/")
+  }
+)
   }
 
 }

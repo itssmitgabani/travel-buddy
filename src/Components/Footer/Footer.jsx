@@ -6,11 +6,11 @@ const Footer = () => {
             <div className="row">
                 <div className="col span_1_of_2">
                     <ul className="footer-nav">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Book hotel</a></li>
-                        <li><a href="#">Book flight</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/AboutUs">About us</a></li>
+                        <li><a href="/ContactUs">Contact us</a></li>
+                        <li><a href="/hotel">Book hotel</a></li>
+                        <li><a href="/flight">Book flight</a></li>
                     </ul>
                 </div>
                 <div className="col span_1_of_2">

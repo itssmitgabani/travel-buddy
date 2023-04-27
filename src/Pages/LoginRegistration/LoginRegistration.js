@@ -46,7 +46,7 @@ const [credentials1, setCredentials1] = useState({
 	e.preventDefault();
 	dispatch({ type: "LOGIN_START" });
 	try {
-	  const res = await axios.post("/auth/user/login", credentials);
+	  const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/user/login`, credentials);
 	  
 		dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
 		navigate("/");
@@ -62,7 +62,7 @@ const [error1,setError1] = useState(null);
 	e.preventDefault();
 	setLoading(true)
 	try {
-	  await axios.post("/auth/user/register", credentials1);
+	  await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/user/register`, credentials1);
 	  setError1(null)
 	  setLoading(false)
 	  navigate("/checkEmail")

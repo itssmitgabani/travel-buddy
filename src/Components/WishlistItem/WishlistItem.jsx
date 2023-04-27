@@ -53,10 +53,10 @@ const WishlistItem = ({item}) => {
         <span className="siTaxiOp">{da && data.category}</span>
         
         
-        <div style={{display:'flex'}}>
+        <div style={{display:'flex',flexWrap:'wrap',gap:'2px 20px'}}>
         {da1._id && data.amenities.map((item)=>(
-          <span className="siSubtitle" key={item}>
-          {item}&emsp;
+          <span className="siTaxiOp1" key={item}>
+          &nbsp;{item}&nbsp;
         </span>
         ))}
         </div>

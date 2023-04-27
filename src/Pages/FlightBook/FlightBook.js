@@ -5,8 +5,32 @@ import Loader from '../../Components/Loader/Loader';
 import { AuthContext } from '../../context/AuthContext';
 import useFetch from '../../hooks/useFetch';
 import './FlightBook.scss'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import * as React from 'react';
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 const FlightBook = () => {
+  const [open1, setOpen1] = React.useState(false);
+
   
+
+  const handleClose = (event, reason) => {
+    
+
+    setOpen1(false);
+  };
+  const [open3, setOpen3] = React.useState(false);
+
+  
+
+  const handleClose3 = (event, reason) => {
+    
+
+    setOpen3(false);
+  };
+
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   
@@ -35,12 +59,24 @@ const {user} = useContext(AuthContext)
 const navigate = useNavigate();
 const handleClick = () => {
   if(user === null){
-    return alert("login first")
+    return setOpen1(true)
+  }if(!user.id){
+    return setOpen3(true)
   }
   navigate("/flight/bookingDetail",{state:{ data:data[0],options}})
 };
   return (
     <div>
+      <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+          Login First!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open3} autoHideDuration={2000} onClose={handleClose3}>
+        <Alert onClose={handleClose3} severity="error" sx={{ width: '100%' }}>
+          please Enter ID details in profile section
+        </Alert>
+      </Snackbar>
       {loading && <Loader/>}
       <div className="airlneContainer1">
           <div className="hotelWrapper">
@@ -102,7 +138,7 @@ const handleClick = () => {
               
               </div>
               <span>{da && data[0].availableSeats < 10 && "Hurry Up" }<b> {da && data[0].availableSeats}</b> Seats Available</span>
-                <button onClick={handleClick}>Reserve or Book Now!</button>
+                <button onClick={handleClick } className={da && data[0].availableSeats===0 && 'dNone'}>Reserve or Book Now!</button>
               </div>
             </div>
           </div>

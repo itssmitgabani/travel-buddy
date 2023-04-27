@@ -20,7 +20,7 @@ const FlightSearch = () => {
   const [max, setMax] = useState(undefined);
   const [sort, setSort] = useState(undefined);
   const { data, loading, error, reFetch } = useFetch(
-    `/flight?from=${from}&to=${to}&date=${dates}&min=${min || 0 }&max=${max || 100000}&sort=${sort || 1}`
+    `/flight?from=${from}&to=${to}&date=${dates}&min=${min || 0 }&max=${max || 1000000}&sort=${sort || 1}`
   );
 
 

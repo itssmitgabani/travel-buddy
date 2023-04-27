@@ -8,6 +8,7 @@ import './HotelBookDetail.scss'
 import Loader from '../../Components/Loader/Loader'
 import StripeCheckout from 'react-stripe-checkout';
 import {useNavigate} from 'react-router-dom' 
+import Swal from 'sweetalert2'
 
 const HotelBookFDetail = () => {
     const location = useLocation();
@@ -74,23 +75,38 @@ const onToken = async (token) =>{
   }
 
   try{
-    await axios.post("/bookHotel/book",info)
+    await axios.post(`${process.env.REACT_APP_BASE_URL}/bookHotel/book`,info)
     await Promise.all(
       selectedRoom.map((roomId) => {
-        const res = axios.put(`/room/availability/${roomId}`, {
+        const res = axios.put(`${process.env.REACT_APP_BASE_URL}/room/availability/${roomId}`, {
           dates: alldates,
         });
         return res.data;
       })
     );
 
-    await axios.put(`/payment/hotel/add/${info.h_id}`,{amount:(info.totalAmt-=(info.totalAmt/10))})
+    await axios.put(`${process.env.REACT_APP_BASE_URL}/payment/hotel/add/${info.h_id}`,{amount:(info.totalAmt-=(info.totalAmt/10))})
     setLoading(false)
-    alert("done")
-    navigate("/")
+    Swal.fire(
+      'Congratulations!',
+      'Hotel Booked Successfully...',
+      'success'
+    ).then(result => {
+      navigate("/bookings")
+      }
+    )
+    navigate("/bookings")
   }catch(err){
     setLoading(false)
 console.log(err)
+Swal.fire(
+  'OOps!',
+  'Something Went Wrong...',
+  'success'
+).then(result => {
+  navigate("/")
+  }
+)
   }
 
 }

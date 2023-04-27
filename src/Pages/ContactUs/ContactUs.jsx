@@ -17,7 +17,7 @@ const ContactUs = () => {
     e.preventDefault()
 try{
   setLoading(true)
-  await axios.post('/contact/create',info)
+  await axios.post(`${process.env.REACT_APP_BASE_URL}/contact/create`,info)
   setLoading(false)
   window.location.reload()
 }

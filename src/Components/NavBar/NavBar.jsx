@@ -58,7 +58,7 @@ const NavBar = () => {
                         {!user && <Link to="/login"><li>sign in</li></Link>}
                         {user && <li className='pro' style={{textTransform:'none',fontSize:'100%'}} onClick={() => setOpenProfile(!openProfile)} onClose={handleClose}>
                           <div style={{display:'flex','alignItems':'flex-end',gap:'10px'}}>
-                          <img src={user.img} style={{width:'40px',height:'40px',borderRadius:'50%'}}/>
+                          <img src={user.img} style={{width:'40px',height:'40px',borderRadius:'50%',backgroundPosition:'center',overflow:'hidden',objectFit:'cover'}}/>
 
                         <span>{user.username}</span>
                         {openProfile ? <ExpandLessIcon/>: <ExpandMoreIcon/>}

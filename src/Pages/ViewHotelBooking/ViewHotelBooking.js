@@ -1,13 +1,14 @@
 import axios from 'axios'
 import React, { useContext, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch'
 import './ViewHotelBooking.scss'
 import ReactStars from "react-rating-stars-component";
 import { AuthContext } from '../../context/AuthContext'
 import Loader from '../../Components/Loader/Loader'
-
+import Swal from 'sweetalert2'
 const ViewHotelBooking = () => {
+  const navigate = useNavigate()
   const {user} = useContext(AuthContext)
   const {id} = useParams()
   const {data , loading} = useFetch(`/bookHotel/find/booking/${id}`)
@@ -35,15 +36,30 @@ const ViewHotelBooking = () => {
         }
       }
   
-      await axios.post("/review/add",info)
-      await axios.put(`/bookHotel/reviewed/${data[0]._id}`)
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/review/add`,info)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/bookHotel/reviewed/${data[0]._id}`)
       setLoading(false)
-      alert("done")
+      Swal.fire(
+        'Thanks!',
+        'Thanks for Your review...',
+        'success'
+      ).then(result => {
+        window.location.reload()
+        }
+      )
       window.location.reload()
     }
     catch(err){
       setLoading(false)
       console.log(err)
+      Swal.fire(
+        'OOps!',
+        'Something Went Wrong...',
+        'success'
+      ).then(result => {
+        navigate("/")
+        }
+      )
     }
 
     

@@ -2,6 +2,7 @@ import "./HotelBook.scss";
 import { useContext, useState } from "react";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-date-range";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,9 +19,63 @@ import {AuthContext} from '../../context/AuthContext.js'
 import axios from "axios";
 import Review from "../../Components/Review/Review";
 import Loader from '../../Components/Loader/Loader'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import * as React from 'react';
+import NewReleasesRoundedIcon from '@mui/icons-material/NewReleasesRounded';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Slide from '@mui/material/Slide';
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 const HotelBook = () => {
   
+  const [open4, setOpen4] = useState(false);
+
+  const handleClickOpen4 = () => {
+    setOpen4(true);
+  };
+
+  const handleClose4 = () => {
+    setOpen4(false);
+    
+    window.location.reload()
+  };
+
+  const [open1, setOpen1] = React.useState(false);
+
+  
+
+  const handleClose = (event, reason) => {
+    
+
+    setOpen1(false);
+  };
+  const [open2, setOpen2] = React.useState(false);
+
+  
+
+  const handleClose2 = (event, reason) => {
+    
+
+    setOpen2(false);
+  };
+  const [open3, setOpen3] = React.useState(false);
+
+  
+
+  const handleClose3 = (event, reason) => {
+    
+
+    setOpen3(false);
+  };
+
+
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const { data ,loading } = useFetch(`/room/f/${id}`);
@@ -64,14 +119,13 @@ const HotelBook = () => {
   const handleChange = async () => {
     setLoading(true)
     try{
-      await axios.put(`/users/updateWish/${user._id}/${da && data[0]._id}`)
+      await axios.put(`${process.env.REACT_APP_BASE_URL}/users/updateWish/${user._id}/${da && data[0]._id}`)
     
-      const newData = await axios.get(`/users/find/${user._id}`)
+      const newData = await axios.get(`${process.env.REACT_APP_BASE_URL}/users/find/${user._id}`)
       console.log(newData)
       localStorage.setItem("user", JSON.stringify(newData.data.details));
-      alert("success")
+      handleClickOpen4()
       setLoading(false)
-      window.location.reload()
     }
     catch(err){
       console.log(err)
@@ -117,11 +171,14 @@ const HotelBook = () => {
   const navigate = useNavigate();
   const handleClick = () => {
     if(user === null){
-      return alert("login first")
+      return setOpen1(true)
+    }
+    if(!user.id){
+      return setOpen3(true)
     }
     
     if(selectedRoom.length === undefined ||selectedRoom.length === 0 ){
-      return alert("selectedRoom")
+      return setOpen2(true)
     }
     navigate("/hotel/bookingDetail",{state:{ data:data[0],days,dates:dates[0],selectedRoom,options,selectedRoomNo}})
   };
@@ -129,6 +186,21 @@ const HotelBook = () => {
 
   return (
     <div>
+      <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+          Login First!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open2} autoHideDuration={2000} onClose={handleClose2}>
+        <Alert onClose={handleClose2} severity="error" sx={{ width: '100%' }}>
+          Select Room!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={open3} autoHideDuration={2000} onClose={handleClose3}>
+        <Alert onClose={handleClose3} severity="error" sx={{ width: '100%' }}>
+          please Enter ID details in profile section
+        </Alert>
+      </Snackbar>
       {(loading || loading1 || load) && <Loader/>}
       <div className="hotelContainer1">
         {open && (
@@ -198,9 +270,9 @@ const HotelBook = () => {
               <div style={{ display: "flex" }}>
               <p className="hotelDesc">Amenities:</p> 
               </div>
-              <div style={{display:'flex',marginLeft:'50px'}}>
+              <div style={{display:'flex',marginLeft:'50px',flexWrap:'wrap',gap:'2px 20px'}}>
                 {da &&data[0].amenities.map((item) => (
-                  <span >{item}&emsp;</span>
+                  <span className="siTaxiOp1">&nbsp;{item}&nbsp;</span>
                 ))}
               </div>
               <p className="hotelDesc">Description:</p> 
@@ -310,6 +382,24 @@ const HotelBook = () => {
           </div>
         </div>
       </div>
+      <Dialog
+    style={{zIndex:1500}}
+        open={open4}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose4}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle textAlign={'center'}><CheckCircleIcon style={{width:'80px','height':'80px',color:'green'}}/></DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description" style={{textAlign:'center',color:'black'}}>
+            Wishlist Updated!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions style={{justifyContent:'center'}} >
+          <Button onClick={handleClose4}>OK</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

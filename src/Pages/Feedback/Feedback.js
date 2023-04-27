@@ -2,9 +2,25 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react'
 import './Feedback.scss'
 import {AuthContext} from '../../context/AuthContext.js'
-import Loader from '../../Components/Loader/Loader';
+import Loader from '../../Components/Loader/Loader';import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 
 const Feedback = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick1 = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    
+
+    setOpen(false);
+  };
   const {user} = useContext(AuthContext)
   const [info, setInfo] = useState({});
   const [error, setError] = useState(false);
@@ -21,10 +37,11 @@ try{
     ...info,
     u_id : user._id
   }
-  await axios.post('/feedback/create',newData)
-  alert("thanks")
+  await axios.post(`${process.env.REACT_APP_BASE_URL}/feedback/create`,newData)
   setLoading(false)
-  window.location.reload()
+  handleClick1()
+  
+  setTimeout(function() {window.location.reload();}, 2000)
 }
 catch(err){
   setLoading(false)
@@ -35,6 +52,11 @@ catch(err){
   return (
     <div>
       {loading && <Loader/>}
+      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        Thanks for sharing your Feedback
+        </Alert>
+      </Snackbar>
       <form className='form2'> 
       <h1 style={{color:'gray',padding:'20px',marginTop:'20px',textAlign:'center'}}>Feedback Form :</h1>     
       Feedback For :

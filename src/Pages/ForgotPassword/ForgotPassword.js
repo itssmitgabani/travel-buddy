@@ -15,7 +15,7 @@ const navigate = useNavigate()
     e.preventDefault()
     setLoading(true)
     try{
-      const resp = await axios.post('/auth/user/forgotPassword',{email:email})
+      const resp = await axios.post(`${process.env.REACT_APP_BASE_URL}/auth/user/forgotPassword`,{email:email})
       setResult(resp.data)
       setError(null)
       setLoading(false)
